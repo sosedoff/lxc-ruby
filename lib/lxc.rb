@@ -10,7 +10,10 @@ module LXC
     # Check if all binaries are present in the system
     # @return [Boolean] - true if everything is in place
     def check_binaries
-      !BIN_FILES.map { |n| system("which #{n} > /dev/null") }.uniq.include?(false)
+      !BIN_FILES.map { |f| 
+        path = File.join(LXC::Shell::BIN_PREFIX, f)
+        File.exists?(path)
+      }.uniq.include?(false)
     end
 
     # Get LXC configuration info

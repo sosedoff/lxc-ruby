@@ -1,0 +1,29 @@
+Kernel config /proc/config.gz not found, looking in other places...
+Found kernel config file /boot/config-3.0.0-12-server
+--- Namespaces ---
+Namespaces: enabled
+Utsname namespace: enabled
+Ipc namespace: enabled
+Pid namespace: enabled
+User namespace: enabled
+Network namespace: enabled
+Multiple /dev/pts instances: enabled
+
+--- Control groups ---
+Cgroup: enabled
+Cgroup clone_children flag: enabled
+Cgroup device: enabled
+Cgroup sched: enabled
+Cgroup cpu account: enabled
+Cgroup memory controller: enabled
+Cgroup cpuset: enabled
+
+--- Misc ---
+Veth pair device: enabled
+Macvlan: enabled
+Vlan: enabled
+File capabilities: enabled
+
+Note : Before booting a new kernel, you can check its configuration
+usage : CONFIG=/path/to/config /usr/bin/lxc-checkconfig
+

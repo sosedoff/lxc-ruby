@@ -1,0 +1,2 @@
+source :rubygem
+gemspec

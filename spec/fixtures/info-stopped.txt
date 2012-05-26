@@ -1,0 +1,3 @@
+state:   STOPPED
+lxc-info: 'vm0' is not running
+pid:        -1

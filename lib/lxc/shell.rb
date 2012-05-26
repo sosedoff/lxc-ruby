@@ -1,5 +1,7 @@
 module LXC
   module Shell
+    BIN_PREFIX = '/usr/bin'
+
     BIN_FILES = [
       'lxc-attach',
       'lxc-cgroup',
