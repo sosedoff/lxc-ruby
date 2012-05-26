@@ -1,2 +1,23 @@
 #!/usr/bin/env ruby
-# TODO: Implementation
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rubygems'
+require 'eventmachine'
+require 'thin'
+require 'lxc'
+require 'lxc/server'
+
+def terminate(message, exit_code=1)
+  STDERR.puts(message)
+  exit(exit_code)
+end
+
+EM.run do
+  begin
+    Thin::Server.start(LXC::Server, '0.0.0.0', 27000)
+  rescue Exception => error
+    terminate(error.message)
+  end
+end

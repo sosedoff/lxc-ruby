@@ -13,6 +13,14 @@ module LXC
       @name = name
     end
 
+    def to_hash
+      {
+        'name'  => name, 
+        'state' => state, 
+        'pid'   => pid
+      }
+    end
+
     # Get current status of container
     # @return [Hash] hash with :state and :pid attributes
     def status
