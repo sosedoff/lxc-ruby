@@ -34,16 +34,37 @@ module LXC
       status[:state] == 'RUNNING'
     end
 
+    # Check if container is frozen
+    # @return [Boolean]
+    def frozen?
+      status[:state] == 'FROZEN'
+    end
+
     # Start container
+    # @return [Hash] container status hash
     def start
       lxc('start', '-d', '-n', name)
       status
     end
 
     # Stop container
+    # @return [Hash] container status hash
     def stop
       lxc('stop', '-n', name)
       status
+    end
+
+    # Freeze container
+    # @return [Hash] container status hash
+    def freeze
+      lxc('freeze', '-n', name)
+      status
+    end
+
+    # Unfreeze container
+    # @return [Hash] container status hash
+    def unfreeze
+      lxc('unfreeze', '-n', name)
     end
 
     # Destroy the container 

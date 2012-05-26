@@ -8,7 +8,7 @@ module LXC
     include LXC::Shell
 
     # Check if all binaries are present in the system
-    # @return [Boolean] - true if everything is in place
+    # @return [Boolean] true if binary files are found
     def check_binaries
       !BIN_FILES.map { |f| 
         path = File.join(LXC::Shell::BIN_PREFIX, f)
@@ -28,7 +28,7 @@ module LXC
 
     # Get container information record
     # @param [name] container name
-    # @return [LXC::Container]
+    # @return [LXC::Container] single container
     def container(name)
       LXC::Container.new(name)
     end
@@ -40,7 +40,7 @@ module LXC
     end
 
     # Get current LXC version
-    # @return [String]
+    # @return [String] current LXC version
     def version
       lxc('version').strip.split(' ').last
     end

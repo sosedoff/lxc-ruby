@@ -41,8 +41,8 @@ module LXC
 
     # Execute a LXC command
     # To use pipe command just provide a block 
-    # @param [name] - command name
-    # @param [args] - command arguments
+    # @param [name] command name
+    # @param [args] command arguments
     # @return [String]
     def lxc(command, *args)
       command_name = "lxc-#{command}"
