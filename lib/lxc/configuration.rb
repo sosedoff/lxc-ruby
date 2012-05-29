@@ -1,5 +1,7 @@
 module LXC
   class Configuration
+    include LXC::ConfigurationOptions
+
     attr_reader :content
 
     # Initialize a new LXC::Configuration instance
@@ -61,6 +63,9 @@ module LXC
       lines = data.split("\n").map(&:strip).select { |l| !l.empty? && l[0,1] != '#' }
       lines.each do |l|
         key,value = l.split('=').map(&:strip)
+        if !valid_option?(key)
+          raise ConfigurationError, "Invalid config attribute: #{key}."
+        end
         key.gsub!(/^lxc\./, '').gsub!('.', '_')
         hash[key] = [] if !hash.key?(key)
         hash[key] << value
