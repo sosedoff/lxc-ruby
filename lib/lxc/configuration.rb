@@ -5,7 +5,7 @@ module LXC
     # Initialize a new LXC::Configuration instance
     # @param [data] string or hash data (optional)
     def initialize(data=nil)
-      unless data.nil?
+      if data.kind_of?(String)
         @content = parse(data)
       end
     end
