@@ -1,6 +1,7 @@
 require 'lxc/version'
 require 'lxc/errors'
 require 'lxc/shell'
+require 'lxc/configuration'
 require 'lxc/container'
 
 module LXC
