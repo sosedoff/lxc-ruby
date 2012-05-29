@@ -40,7 +40,7 @@ LXC.container('name')
 
 Container instance is a simple abstaction for lxc's container tools:
 
-```
+```ruby
 c = LXC.container('foo')
 
 # Get current status of container
