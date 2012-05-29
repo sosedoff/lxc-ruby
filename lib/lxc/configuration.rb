@@ -58,7 +58,7 @@ module LXC
 
     def parse(data)
       hash = {}
-      lines = data.split("\n").map(&:strip).select { |l| !l.empty? && l[0] != '#' }
+      lines = data.split("\n").map(&:strip).select { |l| !l.empty? && l[0,1] != '#' }
       lines.each do |l|
         key,value = l.split('=').map(&:strip)
         key.gsub!(/^lxc\./, '').gsub!('.', '_')
