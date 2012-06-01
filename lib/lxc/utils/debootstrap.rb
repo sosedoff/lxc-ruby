@@ -21,8 +21,7 @@ module LXC::Utils
         dir
       ]
 
-      cmd = "debootstrap #{params.join(' ')}"
-      `#{cmd}`
+      "debootstrap #{params.join(' ')}"
     end
   end
 end
