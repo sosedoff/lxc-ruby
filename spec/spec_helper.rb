@@ -2,8 +2,9 @@ $:.unshift File.expand_path("../..", __FILE__)
 
 require 'lib/lxc'
 
-def fixture_path
-  File.expand_path("../fixtures", __FILE__)
+def fixture_path(filename=nil)
+  path = File.expand_path("../fixtures", __FILE__)
+  filename.nil? ? path : File.join(path, filename)
 end
 
 def fixture(file)
