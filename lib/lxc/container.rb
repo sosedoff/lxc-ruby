@@ -13,7 +13,10 @@ module LXC
       @name = name
     end
 
+    # Get container as hash
+    # @return [Hash]
     def to_hash
+      status
       {
         'name'  => name, 
         'state' => state, 
