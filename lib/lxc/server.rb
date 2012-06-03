@@ -26,6 +26,7 @@ module LXC
     end
     
     not_found do
+      content_type :json, :encoding => :utf8
       json_response(:error => "Invalid request path")
     end
     
