@@ -15,9 +15,5 @@ def terminate(message, exit_code=1)
 end
 
 EM.run do
-  begin
-    Thin::Server.start(LXC::Server, '0.0.0.0', 27000)
-  rescue Exception => error
-    terminate(error.message)
-  end
+  Thin::Server.start(LXC::Server, '0.0.0.0', 27000)
 end
