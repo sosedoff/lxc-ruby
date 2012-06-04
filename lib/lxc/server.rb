@@ -16,7 +16,7 @@ module LXC
 
       def find_container
         @container = LXC.container(params[:c_name])
-        unless container.exists?
+        unless @container.exists?
           error_response("Container #{name} does not exist")
         end
       end
