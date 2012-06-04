@@ -13,6 +13,13 @@ module LXC
       def error_response(error, status=400)
         halt(400, json_response(:error => error))
       end
+
+      def find_container
+        @container = LXC.container(params[:c_name])
+        unless container.exists?
+          error_response("Container #{name} does not exist")
+        end
+      end
     end
     
     before do
@@ -47,9 +54,20 @@ module LXC
       json_response(containers.map(&:to_hash))
     end
 
-    get '/containers/:name' do
-      container = LXC.container(params[:name])
-      json_response(container.to_hash)
+    get '/containers/:c_name' do
+      find_container
+      json_response(@container.to_hash)
+    end
+
+    post '/containers/:c_name/:action' do
+      find_container
+      case params[:action]
+      when 'start', 'stop', 'freeze', 'unfreeze'
+        @container.send(params[:action].to_sym)
+      else
+        error_response("Invalid action: #{params[:action]}")
+      end
+      json_response(@container.to_hash)
     end
   end
 end
