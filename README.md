@@ -15,6 +15,8 @@ rake install
 
 ## Usage
 
+**NOTE** Works only with LXC >= 0.7.5
+
 You should have LXC already installed on your system before using the library.
 
 Example:
