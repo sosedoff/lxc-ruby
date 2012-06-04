@@ -64,6 +64,12 @@ module LXC
       case params[:action]
       when 'start', 'stop', 'freeze', 'unfreeze'
         @container.send(params[:action].to_sym)
+      when 'destroy'
+        begin 
+          @container.destroy
+        rescue LXC::ContainerError => err
+          error_response(err.message)
+        end
       else
         error_response("Invalid action: #{params[:action]}")
       end
