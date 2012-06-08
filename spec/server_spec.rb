@@ -4,7 +4,8 @@ describe LXC::Server do
   it 'GET / returns some data' do
     get '/'
     last_response.status.should eq(200)
-    last_response.headers['Content-Type'].should eq('application/json;encoding=utf8, charset=utf-8')
+    last_response.headers['Content-Type'].should match('application/json')
+    last_response.headers['Content-Type'].should match('utf8')
     last_response.body.should_not be_empty
   end
 
