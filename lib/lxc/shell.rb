@@ -46,7 +46,7 @@ module LXC
     # @param [name] command name
     # @param [args] command arguments
     # @return [String]
-    def lxc(command, *args)
+    def run(command, *args)
       command_name = "lxc-#{command}"
       unless BIN_FILES.include?(command_name)
         raise ArgumentError, "Invalid command: #{command_name}."
@@ -55,7 +55,5 @@ module LXC
       cmd += " | #{yield}" if block_given?
       `#{cmd.strip}`
     end
-
-    alias :run :lxc
   end
 end
