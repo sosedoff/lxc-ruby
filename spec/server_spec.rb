@@ -33,7 +33,10 @@ describe LXC::Server do
     data = parse_json(last_response.body)
     data.should be_an Array
     data.should_not be_empty
-    data.first.keys.should eq(['name', 'state', 'pid'])
+    keys = data.first.keys
+    keys.include?('name').should be_true
+    keys.include?('state').should be_true
+    keys.include?('pid').should be_true
   end
 
   it 'GET /container/:name returns a single container' do
