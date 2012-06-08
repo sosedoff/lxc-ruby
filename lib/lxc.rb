@@ -9,13 +9,17 @@ module LXC
   class << self
     include LXC::Shell
 
+    # Check if binary file is installed
+    # @return [Boolean] true if installed
+    def binary_installed?(name)
+      path = File.join(LXC::Shell::BIN_PREFIX, f)
+      File.exists?(path)
+    end
+
     # Check if all binaries are present in the system
     # @return [Boolean] true if binary files are found
-    def check_binaries
-      !BIN_FILES.map { |f| 
-        path = File.join(LXC::Shell::BIN_PREFIX, f)
-        File.exists?(path)
-      }.uniq.include?(false)
+    def installed?
+      !BIN_FILES.map { |f| binary_installed?(f) }.uniq.include?(false)
     end
 
     # Get LXC configuration info
