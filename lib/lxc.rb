@@ -21,7 +21,7 @@ module LXC
     # Get LXC configuration info
     # @return [Hash] hash containing config groups
     def config
-      str = lxc('checkconfig') { 'sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"' }
+      str = LXC.run('checkconfig') { 'sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"' }
       data = str.scan(/^([\w\s]+): (enabled|disabled)$/).map { |r|
         [r.first.downcase.gsub(' ', '_'), r.last == 'enabled']
       }
@@ -38,13 +38,13 @@ module LXC
     # Get a list of all available containers
     # @return [Array] array of LXC::Containers
     def containers
-      lxc('ls').split("\n").uniq.map { |name| Container.new(name) }
+      LXC.run('ls').split("\n").uniq.map { |name| Container.new(name) }
     end
 
     # Get current LXC version
     # @return [String] current LXC version
     def version
-      lxc('version').strip.split(' ').last
+      LXC.run('version').strip.split(' ').last
     end
   end
 end

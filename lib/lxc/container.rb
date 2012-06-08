@@ -1,7 +1,5 @@
 module LXC
   class Container
-    include LXC::Shell
-
     attr_accessor :name     # Container name (alias)
     attr_reader   :state    # Current state
     attr_reader   :pid      # Current PID (-1 if not running)
@@ -17,17 +15,13 @@ module LXC
     # @return [Hash]
     def to_hash
       status
-      {
-        'name'  => name, 
-        'state' => state, 
-        'pid'   => pid
-      }
+      {'name' => name, 'state' => state, 'pid' => pid}
     end
 
     # Get current status of container
     # @return [Hash] hash with :state and :pid attributes
     def status
-      str    = lxc('info', '-n', name)
+      str    = LXC.run('info', '-n', name)
       @state = str.scan(/state:\s+([\w]+)/).flatten.first
       @pid   = str.scan(/pid:\s+(-?[\d]+)/).flatten.first
       {:state => @state, :pid => @pid}
@@ -36,7 +30,7 @@ module LXC
     # Check if container exists
     # @return [Boolean]
     def exists?
-      lxc('ls').split("\n").uniq.include?(name)
+      LXC.run('ls').split("\n").uniq.include?(name)
     end
 
     # Check if container is running
@@ -54,40 +48,40 @@ module LXC
     # Start container
     # @return [Hash] container status hash
     def start
-      lxc('start', '-d', '-n', name)
+      LXC.run('start', '-d', '-n', name)
       status
     end
 
     # Stop container
     # @return [Hash] container status hash
     def stop
-      lxc('stop', '-n', name)
+      LXC.run('stop', '-n', name)
       status
     end
 
     # Freeze container
     # @return [Hash] container status hash
     def freeze
-      lxc('freeze', '-n', name)
+      LXC.run('freeze', '-n', name)
       status
     end
 
     # Unfreeze container
     # @return [Hash] container status hash
     def unfreeze
-      lxc('unfreeze', '-n', name)
+      LXC.run('unfreeze', '-n', name)
     end
 
     # Get container memory usage in bytes
     # @return [Integer]
     def memory_usage
-      lxc('cgroup', '-n', name, 'memory.usage_in_bytes')
+      LXC.run('cgroup', '-n', name, 'memory.usage_in_bytes')
     end
 
     # Get container memory limit in bytes
     # @return [Integer]
     def memory_limit
-      lxc('cgroup', '-n', name, 'memory.limit_in_bytes')
+      LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes')
     end
 
     # Create a new container
@@ -96,7 +90,7 @@ module LXC
     def create(path)
       raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
       raise ContainerError, "Container already exists." if exists?
-      lxc('create', '-n', name, '-f', config_path)
+      LXC.run('create', '-n', name, '-f', config_path)
     end
 
     # Destroy the container 
@@ -104,7 +98,7 @@ module LXC
     def destroy(force=false)
       raise ContainerError, "Container does not exist." unless exists?
       raise ContainerError, "Container is running." if running?
-      lxc('destroy', '-n', name)
+      LXC.run('destroy', '-n', name)
       !exists?
     end
   end

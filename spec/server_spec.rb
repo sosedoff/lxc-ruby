@@ -23,24 +23,30 @@ describe LXC::Server do
   end
 
   it 'GET /containers returns a list of containers' do
+    stub_lxc('ls') { "app" }
+    stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+
     get '/containers'
     last_response.should be_ok
+    
     data = parse_json(last_response.body)
-
     data.should be_an Array
     data.should_not be_empty
     data.first.keys.should eq(['name', 'state', 'pid'])
   end
 
   it 'GET /container/:name returns a single container' do
+    stub_lxc('ls') { "app" }
+    stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+
     get '/containers/app'
     last_response.should be_ok
-    data = parse_json(last_response.body)
 
+    data = parse_json(last_response.body)
     data.should be_a Hash
     data.should_not be_empty
     data['name'].should eq('app')
-    data['status'].should eq('RUNNING')
+    data['state'].should eq('RUNNING')
     data['pid'].should eq('2125')
   end
 

@@ -1,5 +1,7 @@
 module LXC
   module Shell
+    extend self
+
     BIN_PREFIX = '/usr/bin'
 
     BIN_FILES = [
@@ -53,5 +55,7 @@ module LXC
       cmd += " | #{yield}" if block_given?
       `#{cmd.strip}`
     end
+
+    alias :run :lxc
   end
 end

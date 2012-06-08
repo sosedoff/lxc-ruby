@@ -21,7 +21,7 @@ end
 
 def stub_lxc(command, *args)
   output = yield
-  LXC.should_receive(:lxc).with(command, *args).and_return(output)
+  LXC.should_receive(:run).with(command, *args).and_return(output)
 end
 
 def app
@@ -30,11 +30,4 @@ end
 
 def parse_json(data)
   JSON.parse(data)
-end
-
-class LXC::Container
-  def stub_lxc(command, *args)
-    output = yield
-    self.should_receive(:lxc).with(command, *args).and_return(output)
-  end
 end
