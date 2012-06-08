@@ -25,7 +25,7 @@ Example:
 require 'lxc'
 
 # Check if all lxc binaries are installed
-LXC.check_binaries
+LXC.installed?
 
 # Get LXC version
 LXC.version
@@ -70,7 +70,55 @@ c.unfreeze
 c.destroy # => true
 ```
 
-More examples and functionality on the way.
+To create a new container:
+
+``` ruby
+c = LXC::Container.new('foo')
+c.create(path_to_lxc_config)
+```
+
+This method invokes ```lxc-create -n NAME -f CONFIG``` command. It *DOES NOT* create 
+any rootfs images or configures anything.
+
+## LXC Server
+
+This library includes a HTTP API implementation for container management. 
+
+To start server:
+
+```
+lxc-server
+```
+
+Or view more options:
+
+```
+Usage: lxc-server [options]
+    -v, --version                    Show version
+    -b, --bind INTERFACE             Bind server to interface (default: 0.0.0.0)
+    -p, --port PORT                  Start server on port (default: 27000)
+```
+
+API Endpoints:
+
+```
+GET /                  # Get current time
+GET /version           # Current gem version
+GET /lxc_version       # Installed LXC version
+GET /containers        # Get container list 
+GET /containers/:name  # Get a single container information
+```
+
+Container operations:
+
+```
+POST /container/:name/create
+POST /container/:name/destroy
+POST /container/:name/start 
+POST /container/:name/stop
+POST /container/:name/freeze
+POST /container/:name/unfreeze
+```
 
 ## Testing
 
