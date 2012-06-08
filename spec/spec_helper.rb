@@ -1,6 +1,14 @@
 $:.unshift File.expand_path("../..", __FILE__)
 
+require 'rack/test'
+require 'json'
+
 require 'lib/lxc'
+require 'lib/lxc/server'
+
+RSpec.configure do |conf|
+  conf.include Rack::Test::Methods
+end
 
 def fixture_path(filename=nil)
   path = File.expand_path("../fixtures", __FILE__)
@@ -17,6 +25,14 @@ end
 
 def stub_lxc_with_fixture(command, path)
   stub_lxc(command, fixture(path))
+end
+
+def app
+  LXC::Server
+end
+
+def parse_json(data)
+  JSON.parse(data)
 end
 
 class LXC::Container
