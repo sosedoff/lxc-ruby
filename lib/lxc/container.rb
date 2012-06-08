@@ -70,6 +70,7 @@ module LXC
     # @return [Hash] container status hash
     def unfreeze
       LXC.run('unfreeze', '-n', name)
+      status
     end
 
     # Get container memory usage in bytes
