@@ -43,4 +43,31 @@ describe LXC::Server do
     data['status'].should eq('RUNNING')
     data['pid'].should eq('2125')
   end
+
+  context 'Errors' do
+    class LXC::Server
+      get '/exception' do
+        raise RuntimeError, "Something went wrong"
+      end
+    end
+
+    it 'renders error message on non-existent route' do
+      get '/foo-bar'
+      last_response.should_not be_ok
+      last_response.status.should eq(404)
+      parse_json(last_response.body)['error'].should eq('Invalid request path')
+    end
+
+    it 'renders exception message on internal server error' do
+      get '/exception'
+      last_response.should_not be_ok
+      last_response.status.should eq(500)
+      data = parse_json(last_response.body)
+      data.should be_a Hash
+      data.should_not be_empty
+      data['error'].should_not be_nil
+      data['error']['message'].should eq('Something went wrong')
+      data['error']['type'].should eq('RuntimeError')
+    end
+  end
 end
