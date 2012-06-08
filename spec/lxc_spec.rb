@@ -28,12 +28,12 @@ describe LXC do
   end
 
   it 'returns installed version' do
-    stub_lxc_with_fixture('version', 'lxc-version.txt')
+    stub_lxc('version') { fixture('lxc-version.txt') }
     LXC.version.should eq('0.7.5')
   end
 
   it 'returns config hash with attributes' do
-    stub_lxc_with_fixture('checkconfig', 'lxc-checkconfig.txt')
+    stub_lxc('checkconfig') { fixture('lxc-checkconfig.txt') }
 
     info = LXC.config
     info.should be_a Hash
@@ -64,7 +64,7 @@ describe LXC do
   end
 
   it 'returns all available containers' do
-    stub_lxc('ls', "vm0\nvm1\nvm0")
+    stub_lxc('ls') { "vm0\nvm1\nvm0" }
     list = LXC.containers
     list.should be_an Array
     list.size.should eq(2)

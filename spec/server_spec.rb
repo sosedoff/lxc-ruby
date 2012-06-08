@@ -15,7 +15,7 @@ describe LXC::Server do
   end
 
   it 'GET /lxc_version returns installed LXC version' do
-    stub_lxc_with_fixture('version', 'lxc-version.txt')
+    stub_lxc('version') { fixture('lxc-version.txt') }
 
     get '/lxc_version'
     last_response.should be_ok

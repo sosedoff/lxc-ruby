@@ -19,12 +19,9 @@ def fixture(file)
   File.read(File.join(fixture_path, file))
 end
 
-def stub_lxc(command, output)
-  LXC.should_receive(:lxc).with(command).and_return(output)
-end
-
-def stub_lxc_with_fixture(command, path)
-  stub_lxc(command, fixture(path))
+def stub_lxc(command, *args)
+  output = yield
+  LXC.should_receive(:lxc).with(command, *args).and_return(output)
 end
 
 def app
@@ -39,9 +36,5 @@ class LXC::Container
   def stub_lxc(command, *args)
     output = yield
     self.should_receive(:lxc).with(command, *args).and_return(output)
-  end
-
-  def stub_lxc_with_fixture(command, path)
-    self.stub_lxc(command, fixture(path))
   end
 end
