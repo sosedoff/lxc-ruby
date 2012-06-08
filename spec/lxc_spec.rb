@@ -18,12 +18,12 @@ describe LXC do
     end
 
     it 'returns true if all files are found' do
-      LXC.check_binaries.should be_true
+      LXC.installed?.should be_true
     end
 
     it 'returns false on missing files' do
       FileUtils.rm("/tmp/lxc/lxc-version")
-      LXC.check_binaries.should be_false
+      LXC.installed?.should be_false
     end
   end
 
