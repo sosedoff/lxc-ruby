@@ -47,7 +47,7 @@ module LXC
     def lxc(command, *args)
       command_name = "lxc-#{command}"
       unless BIN_FILES.include?(command_name)
-        raise ArgumentError, "Invalid commend: #{command_name}."
+        raise ArgumentError, "Invalid command: #{command_name}."
       end
       cmd = "#{command_name} #{args.join(' ')}".strip
       cmd += " | #{yield}" if block_given?

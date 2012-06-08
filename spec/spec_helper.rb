@@ -18,3 +18,14 @@ end
 def stub_lxc_with_fixture(command, path)
   stub_lxc(command, fixture(path))
 end
+
+class LXC::Container
+  def stub_lxc(command, *args)
+    output = yield
+    self.should_receive(:lxc).with(command, *args).and_return(output)
+  end
+
+  def stub_lxc_with_fixture(command, path)
+    self.stub_lxc(command, fixture(path))
+  end
+end

@@ -29,7 +29,7 @@ module LXC
     def status
       str    = lxc('info', '-n', name)
       @state = str.scan(/state:\s+([\w]+)/).flatten.first
-      @pid   = str.scan(/pid:\s+([\d]+)/).flatten.first
+      @pid   = str.scan(/pid:\s+(-?[\d]+)/).flatten.first
       {:state => @state, :pid => @pid}
     end
 
@@ -76,6 +76,27 @@ module LXC
     # @return [Hash] container status hash
     def unfreeze
       lxc('unfreeze', '-n', name)
+    end
+
+    # Get container memory usage in bytes
+    # @return [Integer]
+    def memory_usage
+      lxc('cgroup', '-n', name, 'memory.usage_in_bytes')
+    end
+
+    # Get container memory limit in bytes
+    # @return [Integer]
+    def memory_limit
+      lxc('cgroup', '-n', name, 'memory.limit_in_bytes')
+    end
+
+    # Create a new container
+    # @param [String] path to container config file
+
+    def create(path)
+      raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
+      raise ContainerError, "Container already exists." if exists?
+      lxc('create', '-n', name, '-f', config_path)
     end
 
     # Destroy the container 
