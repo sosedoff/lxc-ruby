@@ -40,4 +40,21 @@ describe LXC::Container do
     stub_lxc('cgroup', '-n', 'app', 'memory.limit_in_bytes') { '268435456' }
     subject.memory_limit.should eq('268435456')
   end
+
+  context '.processes' do
+    it 'raises error if container is not running' do
+      stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
+
+      proc { subject.processes }.
+        should raise_error LXC::ContainerError, "Container is not running"
+    end
+ 
+    it 'returns list of all processes' do
+      stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+      stub_lxc('ps', '-n', 'app', '--', 'aux') { fixture('lxc-ps-aux.txt') }
+
+      list = subject.processes
+      list.should_not be_nil
+    end
+  end
 end

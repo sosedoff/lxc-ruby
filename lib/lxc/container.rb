@@ -85,9 +85,16 @@ module LXC
       LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes')
     end
 
+    # Get container processes
+    def processes
+      raise ContainerError, "Container is not running" if !running?
+      str = LXC.run('ps', '-n', name, '--', 'aux').strip
+      # TODO: Parse process list
+      str.split("\n")
+    end
+
     # Create a new container
     # @param [String] path to container config file
-
     def create(path)
       raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
       raise ContainerError, "Container already exists." if exists?
