@@ -86,11 +86,12 @@ module LXC
     end
 
     # Get container processes
+    # @return [Array] list of all processes
     def processes
       raise ContainerError, "Container is not running" if !running?
-      str = LXC.run('ps', '-n', name, '--', 'aux').strip
-      # TODO: Parse process list
-      str.split("\n")
+      str = LXC.run('ps', '-n', name, '--', '-eo pid,user,%cpu,%mem,args').strip
+      lines = str.split("\n") ; lines.delete_at(0)
+      lines.map { |l| parse_process_line(l) }
     end
 
     # Create a new container
@@ -108,6 +109,29 @@ module LXC
       raise ContainerError, "Container is running." if running?
       LXC.run('destroy', '-n', name)
       !exists?
+    end
+
+    private
+
+    def parse_process_line(line)
+      chunks = line.split(' ')
+      chunks.delete_at(0)
+
+      pid     = chunks.shift
+      user    = chunks.shift
+      cpu     = chunks.shift
+      mem     = chunks.shift
+      command = chunks.shift
+      args    = chunks.join(' ')
+
+      {
+        'pid'     => pid,
+        'user'    => user,
+        'cpu'     => cpu,
+        'memory'  => mem,
+        'command' => command,
+        'args'    => args
+      }
     end
   end
 end

@@ -51,10 +51,19 @@ describe LXC::Container do
  
     it 'returns list of all processes' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
-      stub_lxc('ps', '-n', 'app', '--', 'aux') { fixture('lxc-ps-aux.txt') }
+      stub_lxc('ps', '-n', 'app', '--', '-eo pid,user,%cpu,%mem,args') { fixture('lxc-ps-aux.txt') }
 
       list = subject.processes
-      list.should_not be_nil
+      list.should be_an Array
+
+      p = list.first
+      p.should be_a Hash
+      p.should have_key('pid')
+      p.should have_key('user')
+      p.should have_key('cpu')
+      p.should have_key('memory')
+      p.should have_key('command')
+      p.should have_key('args')
     end
   end
 end
