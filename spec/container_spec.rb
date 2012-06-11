@@ -32,13 +32,13 @@ describe LXC::Container do
   end
 
   it 'returns the amount of used memory' do
-    stub_lxc('cgroup', '-n', 'app', 'memory.usage_in_bytes') { '3280896' }
-    subject.memory_usage.should eq('3280896')
+    stub_lxc('cgroup', '-n', 'app', 'memory.usage_in_bytes') { "3280896\n" }
+    subject.memory_usage.should eq(3280896)
   end
 
   it 'returns the memory limit' do
-    stub_lxc('cgroup', '-n', 'app', 'memory.limit_in_bytes') { '268435456' }
-    subject.memory_limit.should eq('268435456')
+    stub_lxc('cgroup', '-n', 'app', 'memory.limit_in_bytes') { "268435456\n" }
+    subject.memory_limit.should eq(268435456)
   end
 
   context '.processes' do

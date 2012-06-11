@@ -76,13 +76,13 @@ module LXC
     # Get container memory usage in bytes
     # @return [Integer]
     def memory_usage
-      LXC.run('cgroup', '-n', name, 'memory.usage_in_bytes')
+      LXC.run('cgroup', '-n', name, 'memory.usage_in_bytes').strip.to_i
     end
 
     # Get container memory limit in bytes
     # @return [Integer]
     def memory_limit
-      LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes')
+      LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes').strip.to_i
     end
 
     # Get container processes
