@@ -21,14 +21,16 @@ describe LXC::Container do
     subject.exists?.should be_false
   end
 
-  it 'returns STOPPED status' do
-    stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
-    subject.status.should eq({:state => 'STOPPED', :pid => '-1'})
-  end
+  context '.status' do
+    it 'returns STOPPED' do
+      stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
+      subject.status.should eq({:state => 'STOPPED', :pid => '-1'})
+    end
 
-  it 'returns RUNNING status' do
-    stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
-    subject.status.should eq({:state => 'RUNNING', :pid => '2125'})
+    it 'returns RUNNING' do
+      stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+      subject.status.should eq({:state => 'RUNNING', :pid => '2125'})
+    end
   end
 
   it 'returns the amount of used memory' do
