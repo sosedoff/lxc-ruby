@@ -54,6 +54,19 @@ describe LXC::Server do
     data['pid'].should eq('2125')
   end
 
+  it 'GET /container/:name/processes returns current running processes' do
+    stub_lxc('ls') { "app" }
+    stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+    stub_lxc('ps', '-n', 'app', '--', '-eo pid,user,%cpu,%mem,args') { fixture('lxc-ps-aux.txt') }
+
+    get '/containers/app/processes'
+    last_response.should be_ok
+
+    data = parse_json(last_response.body)
+    data.should be_an Array
+    data.first.should be_a Hash
+  end
+
   context 'Errors' do
     class LXC::Server
       get '/exception' do

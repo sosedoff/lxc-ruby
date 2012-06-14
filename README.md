@@ -118,26 +118,31 @@ Usage: lxc-server [options]
     -p, --port PORT                  Start server on port (default: 27000)
 ```
 
-API Endpoints:
+### Endpoints
 
-```
-GET /                  # Get current time
-GET /version           # Current gem version
-GET /lxc_version       # Installed LXC version
-GET /containers        # Get container list 
-GET /containers/:name  # Get a single container information
-```
+General:
 
-Container operations:
+    GET /                  # Get current time
+    GET /version           # Current gem version
+    GET /lxc_version       # Installed LXC version
+    GET /containers        # Get container list 
+    GET /containers/:name  # Get a single container information
 
-```
-POST /container/:name/create
-POST /container/:name/destroy
-POST /container/:name/start 
-POST /container/:name/stop
-POST /container/:name/freeze
-POST /container/:name/unfreeze
-```
+Processes:
+
+    GET /containers/:name/processes # Get a list of all running processes
+
+Management:
+
+    POST /container/:name/create
+    POST /container/:name/destroy
+
+Status change operations:
+
+    POST /container/:name/start 
+    POST /container/:name/stop
+    POST /container/:name/freeze
+    POST /container/:name/unfreeze
 
 ## Testing
 
