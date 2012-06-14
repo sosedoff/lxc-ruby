@@ -15,16 +15,15 @@ def terminate(message, exit_code=1)
   exit(exit_code)
 end
 
-if LXC.binary_installed?('lxc-version')
-  if LXC.version < '0.7.5'
-    terminate("LXC >= v0.7.5 required.")
+def check_lxc
+  if LXC.binary_installed?('lxc-version')
+    terminate("LXC >= v0.7.5 required.") if LXC.version < '0.7.5'
+  else
+    terminate("LXC is not installed.")
   end
-else
-  terminate("LXC is not installed.")
-end
-
-if !LXC.installed?
-  terminate("Some of the LXC tools are missing.")
+  if !LXC.installed?
+    terminate("LXC tools are missing. Make sure you're running >= v0.7.5")
+  end
 end
 
 options = {
@@ -42,7 +41,7 @@ optparse = OptionParser.new do |opts|
     options[:bind] = v
   end
 
-  opts.on('-p', '--port PORT', 'Start server on port (default: 27000)') do |v|
+  opts.on('-p', '--port PORT', 'Start server on port (default: 5050)') do |v|
     options[:port] = v
   end
 end
@@ -52,6 +51,8 @@ begin
 rescue OptionParser::ParseError => e
   terminate(e.message)
 end
+
+check_lxc
 
 EM.run do
   Thin::Server.start(LXC::Server, options[:bind], options[:port])
