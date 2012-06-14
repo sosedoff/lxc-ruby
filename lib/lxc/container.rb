@@ -22,8 +22,8 @@ module LXC
     # @return [Hash] hash with :state and :pid attributes
     def status
       str    = LXC.run('info', '-n', name)
-      @state = str.scan(/state:\s+([\w]+)/).flatten.first
-      @pid   = str.scan(/pid:\s+(-?[\d]+)/).flatten.first
+      @state = str.scan(/^state:\s+([\w]+)$/).flatten.first
+      @pid   = str.scan(/^pid:\s+(-?[\d]+)$/).flatten.first
       {:state => @state, :pid => @pid}
     end
 
