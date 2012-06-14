@@ -29,7 +29,7 @@ end
 
 options = {
   :bind => '0.0.0.0',
-  :port => 27000
+  :port => 5050
 }
 
 optparse = OptionParser.new do |opts|
