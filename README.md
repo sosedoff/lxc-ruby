@@ -1,8 +1,15 @@
 # LXC Ruby Wrapper [![Build Status](https://secure.travis-ci.org/sosedoff/lxc-ruby.png?branch=master)](http://travis-ci.org/sosedoff/lxc-ruby)
 
-Ruby library to manage linux containers (lxc) via ruby dsl or HTTP api.
+Ruby wrapper to [LXC](http://lxc.sourceforge.net/) cli tools. 
 
-HTTP api support is coming soon.
+Provides a simple ruby dsl and json API to manage containers. 
+
+## Requirements
+
+Only >= 0.7.5 LXC version supported due to CLI output syntax differences. 
+
+For testing purposes you can use [Vagrant](http://vagrantup.com/) or [VirtualBox](https://www.virtualbox.org/). Most of functionality
+was tested on Ubuntu 11.04 / 11.10. Additional boxes could be found [here](http://www.vagrantbox.es/)
 
 ## Installation
 
@@ -14,8 +21,6 @@ rake install
 ```
 
 ## Usage
-
-**NOTE** Works only with LXC >= 0.7.5
 
 You should have LXC already installed on your system before using the library.
 
@@ -65,6 +70,20 @@ c.stop   # => {:state => 'STOPPED', :pid => -1}
 # Free and unfreeze (also returns current status)
 c.freeze
 c.unfreeze
+
+# Get container memory usage (in bytes)
+c.memory_usage
+c.memory_limit
+
+# Get running processes
+c.processes 
+# => 
+#[{"pid"=>"27404",
+#   "user"=>"root",
+#   "cpu"=>"0.0",
+#   "memory"=>"0.1",
+#   "command"=>"/sbin/init",
+#   "args"=>""}]
 
 # Destroy container
 c.destroy # => true
