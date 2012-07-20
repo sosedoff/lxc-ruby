@@ -71,4 +71,42 @@ describe LXC do
     list.first.should be_a LXC::Container
     list.first.name.should eq('vm0')
   end
+
+  context 'sudo' do
+    class Foo
+      include LXC::Shell
+    end
+
+    before do
+      LXC.use_sudo = true
+    end
+
+    it 'executes command using sudo' do
+      LXC.use_sudo.should be_true
+
+      bar = Foo.new
+      bar.should_receive(:'`').with('sudo lxc-version').and_return(fixture('lxc-version.txt'))
+      bar.run('version').should_not be_empty
+    end
+  end
+
+  context '.use_sudo' do
+    class Bar
+      include LXC::Shell
+    end
+
+    it 'should be true' do
+      foo = Bar.new
+      foo.use_sudo.should eq(true)
+      LXC.use_sudo.should eq(true)
+    end
+
+    it 'should be false' do
+      LXC.use_sudo = false
+      foo = Bar.new
+
+      LXC.use_sudo.should eq(false)
+      foo.use_sudo.should eq(false)
+    end
+  end
 end
