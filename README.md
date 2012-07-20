@@ -6,7 +6,11 @@ Provides a simple ruby dsl and json API to manage containers.
 
 ## Requirements
 
-Only >= 0.7.5 LXC version supported due to CLI output syntax differences. 
+Supported LXC versions:
+
+- 0.7.5
+- 0.8.0-rc1
+- 0.8.0-rc2 - in works  
 
 For testing purposes you can use [Vagrant](http://vagrantup.com/) or [VirtualBox](https://www.virtualbox.org/). Most of functionality
 was tested on Ubuntu 11.04 / 11.10. Additional boxes could be found [here](http://www.vagrantbox.es/)
@@ -98,6 +102,21 @@ c.create(path_to_lxc_config)
 
 This method invokes ```lxc-create -n NAME -f CONFIG``` command. It *DOES NOT* create 
 any rootfs images or configures anything.
+
+### Running with sudo
+
+By default LXC does not allow to run its command under unprivileged user. There are
+two ways to make it work: 
+
+1. Using sudo
+
+```ruby
+LXC.use_sudo = true
+```
+
+2. Using lxc-setcap
+
+If you want to make container usable by non-root users, run lxc-setcap as root, and some capabilities will be set so that normal users will be able to use the container utils. This is not done by default, though, and you have to explicitly allow it.
 
 ## LXC Server
 
