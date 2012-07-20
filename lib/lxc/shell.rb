@@ -41,6 +41,16 @@ module LXC
       'STOPPING'
     ]
 
+    @@use_sudo = false
+
+    def use_sudo
+      @@use_sudo
+    end
+
+    def use_sudo=(val)
+      @@use_sudo = val
+    end
+
     # Execute a LXC command
     # To use pipe command just provide a block 
     # @param [name] command name
@@ -51,7 +61,10 @@ module LXC
       unless BIN_FILES.include?(command_name)
         raise ArgumentError, "Invalid command: #{command_name}."
       end
-      cmd = "#{command_name} #{args.join(' ')}".strip
+
+      cmd = ""
+      cmd += "sudo " if use_sudo == true
+      cmd += "#{command_name} #{args.join(' ')}".strip
       cmd += " | #{yield}" if block_given?
       `#{cmd.strip}`
     end
