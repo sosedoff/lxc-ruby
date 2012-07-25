@@ -37,8 +37,10 @@ module LXC
       'STOPPED',
       'STARTING',
       'RUNNING',
+      'STOPPING',
       'ABORTING',
-      'STOPPING'
+      'FREEZING',
+      'FROZEN'
     ]
 
     @@use_sudo = false
