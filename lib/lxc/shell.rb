@@ -53,6 +53,12 @@ module LXC
       @@use_sudo = val
     end
 
+    # Check if state is valid
+    # @return [Boolean]
+    def valid_state?(name)
+      CONTAINER_STATES.include?(name)
+    end
+
     # Execute a LXC command
     # To use pipe command just provide a block 
     # @param [name] command name

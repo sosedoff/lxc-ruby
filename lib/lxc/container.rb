@@ -73,6 +73,15 @@ module LXC
       status
     end
 
+    # Wait for container to change status
+    # @param [String] state state name
+    def wait(state)
+      if !LXC::Shell.valid_state?(state)
+        raise ArgumentError, "Invalid container state: #{state}"
+      end
+      LXC.run('wait', '-n', name, '-s', state)
+    end
+
     # Get container memory usage in bytes
     # @return [Integer]
     def memory_usage
