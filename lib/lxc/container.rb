@@ -99,7 +99,7 @@ module LXC
     def create(path)
       raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
       raise ContainerError, "Container already exists." if exists?
-      LXC.run('create', '-n', name, '-f', config_path)
+      LXC.run('create', '-n', name, '-f', path)
     end
 
     # Destroy the container 
