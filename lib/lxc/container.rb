@@ -104,11 +104,23 @@ module LXC
     end
 
     # Create a new container
-    # @param [String] path to container config file
+    # @param [String] path to container config file or [Hash] options
     def create(path)
-      raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
       raise ContainerError, "Container already exists." if exists?
-      LXC.run('create', '-n', name, '-f', path)
+      if path.is_a?(Hash)
+        args = "-n #{name}"
+        if !!path[:config_file]
+          raise ArgumentError, "File #{path[:config_file]} does not exist." if !File.exists?(path[:config_file])
+          args += " -f #{path[:config_file]}"
+        end
+        args += " -t #{path[:template]}" if !!path[:template]
+        args += " -B #{path[:backingstore]}" if !!path[:backingstore]
+        args += " #{path[:template_options].join(' ')}".strip if !!path[:template_options]
+        LXC.run('create', args)
+      else
+        raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
+        LXC.run('create', '-n', name, '-f', path)
+      end
     end
 
     # Destroy the container 
