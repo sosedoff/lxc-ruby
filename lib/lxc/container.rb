@@ -112,10 +112,23 @@ module LXC
     end
 
     # Destroy the container 
-    # @param [force] force deletion (false)
+    # @param [String] force force destruction
+    # @return [Boolean]
+    #
+    # If container is running and `force` parameter is true
+    # it will be stopped first. Otherwise it will raise exception.
+    #
     def destroy(force=false)
       raise ContainerError, "Container does not exist." unless exists?
-      raise ContainerError, "Container is running." if running?
+
+      if running?
+        if force
+          stop
+        else
+          raise ContainerError, "Container is running. Stop it first."
+        end
+      end
+
       LXC.run('destroy', '-n', name)
       !exists?
     end
