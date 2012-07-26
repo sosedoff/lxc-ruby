@@ -112,26 +112,63 @@ module LXC
 
     # Create a new container
     # @param [String] path to container config file or [Hash] options
+    # @return [Boolean]
     def create(path)
       raise ContainerError, "Container already exists." if exists?
       if path.is_a?(Hash)
         args = "-n #{name}"
+
         if !!path[:config_file]
-          raise ArgumentError, "File #{path[:config_file]} does not exist." if !File.exists?(path[:config_file])
+          unless File.exists?(path[:config_file])
+            raise ArgumentError, "File #{path[:config_file]} does not exist."
+          end
           args += " -f #{path[:config_file]}"
         end
+
         if !!path[:template]
           template_path = "/usr/lib/lxc/templates/lxc-#{path[:template]}"
-          raise ArgumentError, "Template #{path[:template]} does not exist." if !File.exists?(template_path)
+          unless File.exists?(template_path)
+            raise ArgumentError, "Template #{path[:template]} does not exist."
+          end
           args += " -t #{path[:template]}"
         end
+
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
         args += " -- #{path[:template_options].join(' ')}".strip if !!path[:template_options]
+
         LXC.run('create', args)
+        exists?
       else
-        raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
+        raise ArgumentError, "File #{path} does not exist." unless File.exists?(path)
         LXC.run('create', '-n', name, '-f', path)
+        exists?
       end
+    end
+
+    # Clone to a new container from self
+    # @param [String] name of new container
+    # @return [LXC::Container] new container instance
+    def clone_to(target)
+      raise ContainerError, "Container does not exist." unless exists?
+      if self.class.new(target).exists?
+        raise ContainerError, "New container already exists."
+      end
+
+      LXC.run('clone', '-o', name, '-n', target)
+      self.class.new target
+    end
+
+    # Create a new container from an existing container
+    # @param [String] name of existing container
+    # @return [Boolean]
+    def clone_from(source)
+      raise ContainerError, "Container already exists." if exists?
+      unless self.class.new(source).exists?
+        raise ContainerError, "Source container does not exist."
+      end
+
+      LXC.run('clone', '-o', source, '-n', name)
+      exists?
     end
 
     # Destroy the container 
