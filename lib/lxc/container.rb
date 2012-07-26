@@ -180,16 +180,16 @@ module LXC
     #
     def destroy(force=false)
       raise ContainerError, "Container does not exist." unless exists?
-
       if running?
         if force
-          stop
+          # This will force stop and destroy container automatically
+          LXC.run('destroy', '-n', '-f', name)
         else
-          raise ContainerError, "Container is running. Stop it first."
+          raise ContainerError, "Container is running. Stop it first or use force=true"
         end
-      end
-
-      LXC.run('destroy', '-n', name)
+      else
+        LXC.run('destroy', '-n', name)
+      end  
       !exists?
     end
 
