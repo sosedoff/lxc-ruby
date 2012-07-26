@@ -113,7 +113,11 @@ module LXC
           raise ArgumentError, "File #{path[:config_file]} does not exist." if !File.exists?(path[:config_file])
           args += " -f #{path[:config_file]}"
         end
-        args += " -t #{path[:template]}" if !!path[:template]
+        if !!path[:template]
+          template_path = "/usr/lib/lxc/templates/lxc-#{path[:template]}"
+          raise ArgumentError, "Template #{path[:template]} does not exist." if !File.exists?(template_path)
+          args += " -t #{path[:template]}"
+        end
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
         args += " #{path[:template_options].join(' ')}".strip if !!path[:template_options]
         LXC.run('create', args)
