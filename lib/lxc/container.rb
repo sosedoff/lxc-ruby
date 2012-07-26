@@ -116,21 +116,31 @@ module LXC
       raise ContainerError, "Container already exists." if exists?
       if path.is_a?(Hash)
         args = "-n #{name}"
+
         if !!path[:config_file]
-          raise ArgumentError, "File #{path[:config_file]} does not exist." if !File.exists?(path[:config_file])
+          unless File.exists?(path[:config_file])
+            raise ArgumentError, "File #{path[:config_file]} does not exist."
+          end
           args += " -f #{path[:config_file]}"
         end
+
         if !!path[:template]
           template_path = "/usr/lib/lxc/templates/lxc-#{path[:template]}"
-          raise ArgumentError, "Template #{path[:template]} does not exist." if !File.exists?(template_path)
+          unless File.exists?(template_path)
+            raise ArgumentError, "Template #{path[:template]} does not exist."
+          end
           args += " -t #{path[:template]}"
         end
+
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
         args += " -- #{path[:template_options].join(' ')}".strip if !!path[:template_options]
+
         LXC.run('create', args)
+        exists?
       else
-        raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
+        raise ArgumentError, "File #{path} does not exist." unless File.exists?(path)
         LXC.run('create', '-n', name, '-f', path)
+        exists?
       end
     end
 
