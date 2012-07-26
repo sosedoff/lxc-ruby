@@ -126,7 +126,7 @@ module LXC
           args += " -t #{path[:template]}"
         end
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
-        args += " #{path[:template_options].join(' ')}".strip if !!path[:template_options]
+        args += " -- #{path[:template_options].join(' ')}".strip if !!path[:template_options]
         LXC.run('create', args)
       else
         raise ArgumentError, "File #{path} does not exist." if !File.exists?(path)
