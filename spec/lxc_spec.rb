@@ -72,6 +72,12 @@ describe LXC do
     list.first.name.should eq('vm0')
   end
 
+  it 'returns filtered list of containers' do
+    stub_lxc('ls') { "vm0\nvm1\nfoo\n"}
+    list = LXC.containers("vm")
+    list.size.should eq(2)
+  end
+
   context 'sudo' do
     class Foo
       include LXC::Shell

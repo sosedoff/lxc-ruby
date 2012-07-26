@@ -33,16 +33,19 @@ module LXC
     end
 
     # Get container information record
-    # @param [name] container name
+    # @param [name] name container name
     # @return [LXC::Container] single container
     def container(name)
       LXC::Container.new(name)
     end
 
     # Get a list of all available containers
+    # @param [String] filter select containers that match string
     # @return [Array] array of LXC::Containers
-    def containers
-      LXC.run('ls').split("\n").uniq.map { |name| Container.new(name) }
+    def containers(filter=nil)
+      names = LXC.run('ls').split("\n").uniq
+      names.delete_if { |v| !v.include?(filter) } if filter.kind_of?(String)
+      names.map { |name| Container.new(name) }
     end
 
     # Get current LXC version
