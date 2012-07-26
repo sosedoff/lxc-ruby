@@ -112,6 +112,7 @@ module LXC
 
     # Create a new container
     # @param [String] path to container config file or [Hash] options
+    # @return [Boolean]
     def create(path)
       raise ContainerError, "Container already exists." if exists?
       if path.is_a?(Hash)
