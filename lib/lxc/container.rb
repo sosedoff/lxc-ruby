@@ -5,13 +5,13 @@ module LXC
     attr_reader   :pid      # Current PID (-1 if not running)
 
     # Initialize a new LXC::Container instance
-    # @param [name] container name
+    # @param [name] name container name
     # @return [LXC::Container] container instance
     def initialize(name)
       @name = name
     end
 
-    # Get container as hash
+    # Get container attributes hash
     # @return [Hash]
     def to_hash
       status

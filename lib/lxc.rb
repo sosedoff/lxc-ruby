@@ -10,6 +10,7 @@ module LXC
     include LXC::Shell
 
     # Check if binary file is installed
+    # @param [String] name binary filename
     # @return [Boolean] true if installed
     def binary_installed?(name)
       path = File.join(LXC::Shell::BIN_PREFIX, name)
