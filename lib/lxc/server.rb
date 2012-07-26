@@ -67,7 +67,7 @@ module LXC
     post '/containers/:c_name/:action' do
       find_container
       case params[:action]
-      when 'start', 'stop', 'freeze', 'unfreeze'
+      when 'start', 'stop', 'restart', 'freeze', 'unfreeze'
         @container.send(params[:action].to_sym)
       when 'destroy'
         begin 

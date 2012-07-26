@@ -59,6 +59,13 @@ module LXC
       status
     end
 
+    # Restart container
+    # @return [Hash] container status hash
+    def restart
+      stop
+      start
+    end
+
     # Freeze container
     # @return [Hash] container status hash
     def freeze
