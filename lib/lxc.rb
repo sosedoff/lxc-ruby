@@ -35,7 +35,7 @@ module LXC
 
     # Get container information record
     # @param [name] name container name
-    # @return [LXC::Container] single container
+    # @return [LXC::Container] container instance
     def container(name)
       LXC::Container.new(name)
     end

@@ -1,11 +1,11 @@
 module LXC
   class Container
-    attr_accessor :name     # Container name (alias)
-    attr_reader   :state    # Current state
-    attr_reader   :pid      # Current PID (-1 if not running)
+    attr_accessor :name
+    attr_reader   :state
+    attr_reader   :pid
 
     # Initialize a new LXC::Container instance
-    # @param [name] name container name
+    # @param [String] name container name
     # @return [LXC::Container] container instance
     def initialize(name)
       @name = name
@@ -111,7 +111,7 @@ module LXC
     end
 
     # Create a new container
-    # @param [String] path to container config file or [Hash] options
+    # @param [String] path path to container config file or [Hash] options
     # @return [Boolean]
     def create(path)
       raise ContainerError, "Container already exists." if exists?
@@ -146,7 +146,7 @@ module LXC
     end
 
     # Clone to a new container from self
-    # @param [String] name of new container
+    # @param [String] target name of new container
     # @return [LXC::Container] new container instance
     def clone_to(target)
       raise ContainerError, "Container does not exist." unless exists?
@@ -159,7 +159,7 @@ module LXC
     end
 
     # Create a new container from an existing container
-    # @param [String] name of existing container
+    # @param [String] source name of existing container
     # @return [Boolean]
     def clone_from(source)
       raise ContainerError, "Container already exists." if exists?
@@ -172,8 +172,8 @@ module LXC
     end
 
     # Destroy the container 
-    # @param [String] force force destruction
-    # @return [Boolean]
+    # @param [Boolean] force force destruction
+    # @return [Boolean] true if container was destroyed
     #
     # If container is running and `force` parameter is true
     # it will be stopped first. Otherwise it will raise exception.
