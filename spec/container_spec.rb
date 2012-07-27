@@ -34,11 +34,17 @@ describe LXC::Container do
   end
 
   context '.destroy' do
-    context 'on non-existing container' do
-      it 'raises ContainerError' do
-        stub_lxc('ls') { "app2" }
-        proc { subject.destroy }.should raise_error LXC::ContainerError, "Container does not exist."
-      end
+    it 'raises error if container does not exist' do
+      stub_lxc('ls') { "app2" }
+      proc { subject.destroy }.
+        should raise_error LXC::ContainerError, "Container does not exist."
+    end
+
+    it 'raises error if container is running' do
+      stub_lxc('ls') { "app" }
+      stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+      proc { subject.destroy }.
+        should raise_error LXC::ContainerError, "Container is running. Stop it first or use force=true"
     end
   end
 
