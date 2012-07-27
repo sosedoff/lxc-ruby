@@ -45,12 +45,18 @@ module LXC
 
     @@use_sudo = false
 
+    # Check if LXC is using sudo to run commands
+    # @return [Boolean]
     def use_sudo
       @@use_sudo
     end
 
+    # Set LXC to execute commands with sudo
+    # @param [Boolean]
+    # @return [Boolean]
     def use_sudo=(val)
       @@use_sudo = val
+      val
     end
 
     # Check if state is valid
@@ -60,10 +66,12 @@ module LXC
     end
 
     # Execute a LXC command
-    # To use pipe command just provide a block 
-    # @param [name] command name
-    # @param [args] command arguments
-    # @return [String]
+    # @param [String] name command name
+    # @param [Array] args command arguments
+    # @return [String] execution result
+    #
+    # If you would like to use pipe command you'll need to 
+    # provide a block that returns string
     def run(command, *args)
       command_name = "lxc-#{command}"
       unless BIN_FILES.include?(command_name)

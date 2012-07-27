@@ -33,6 +33,15 @@ describe LXC::Container do
     end
   end
 
+  context '.destroy' do
+    context 'on non-existing container' do
+      it 'raises ContainerError' do
+        stub_lxc('ls') { "app2" }
+        proc { subject.destroy }.should raise_error LXC::ContainerError, "Container does not exist."
+      end
+    end
+  end
+
   it 'returns the amount of used memory' do
     stub_lxc('cgroup', '-n', 'app', 'memory.usage_in_bytes') { "3280896\n" }
     subject.memory_usage.should eq(3280896)
