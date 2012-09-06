@@ -163,6 +163,18 @@ Status change operations:
     POST /container/:name/freeze
     POST /container/:name/unfreeze
 
+### Using with Rails
+
+LXC server could be easily mounted onto existing rails 3 application. 
+
+Example (`config/routes.rb`):
+
+```ruby
+YourApp::Application.routes.draw do
+    mount LXC::Server.new, :at => "/api/lxc"
+end
+```
+
 ## Testing
 
 To run the test suite execute:
