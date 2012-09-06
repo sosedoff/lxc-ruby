@@ -46,20 +46,21 @@ module LXC
     @@use_sudo = false
 
     # Check if LXC is using sudo to run commands
-    # @return [Boolean]
+    # @return [Boolean] current sudo flag value
     def use_sudo
       @@use_sudo
     end
 
     # Set LXC to execute commands with sudo
-    # @param [Boolean]
-    # @return [Boolean]
+    # @param val [Boolean] true for sudo usage
+    # @return [Boolean] new sudo flag value
     def use_sudo=(val)
       @@use_sudo = val
       val
     end
 
-    # Check if state is valid
+    # Check if container state is valid
+    # @param name [String] container name
     # @return [Boolean]
     def valid_state?(name)
       CONTAINER_STATES.include?(name)
