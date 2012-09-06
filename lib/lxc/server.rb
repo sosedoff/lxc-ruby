@@ -59,9 +59,15 @@ module LXC
       json_response(@container.to_hash)
     end
 
-    get '/containers/:c_name/processes' do
+    get '/containers/:c_name/:action' do
       find_container
-      json_response(@container.processes)
+
+      case params[:action]
+        when 'processes'
+          json_response(@container.processes)
+        else
+          error_response("Invalid action")
+      end
     end
 
     post '/containers/:c_name/:action' do
@@ -76,7 +82,7 @@ module LXC
           error_response(err.message)
         end
       else
-        error_response("Invalid action: #{params[:action]}")
+        error_response("Invalid action")
       end
       json_response(@container.to_hash)
     end
