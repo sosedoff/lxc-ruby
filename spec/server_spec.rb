@@ -54,6 +54,18 @@ describe LXC::Server do
     data['pid'].should eq('2125')
   end
 
+  it 'GET /container/:name/memory return current memory usage' do
+    stub_lxc('ls') { "app" }
+    stub_lxc('cgroup', '-n', 'app', 'memory.usage_in_bytes') { "123456\n" }
+
+    get '/containers/app/memory'
+    last_response.should be_ok
+
+    data = parse_json(last_response.body)
+    data.should be_a Hash
+    data['memory'].should eq(123456)
+  end
+
   it 'GET /container/:name/processes returns current running processes' do
     stub_lxc('ls') { "app" }
     stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }

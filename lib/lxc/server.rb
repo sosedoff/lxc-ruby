@@ -65,6 +65,8 @@ module LXC
       case params[:action]
         when 'processes'
           json_response(@container.processes)
+        when 'memory'
+          json_response(:memory => @container.memory_usage)
         else
           error_response("Invalid action")
       end
