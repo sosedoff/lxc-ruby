@@ -149,6 +149,7 @@ General:
 
 Processes:
 
+    GET /containers/:name/memory    # Get current memory usage
     GET /containers/:name/processes # Get a list of all running processes
 
 Management:
@@ -167,11 +168,17 @@ Status change operations:
 
 LXC server could be easily mounted onto existing rails 3 application. 
 
-Example (`config/routes.rb`):
+First, include gem into your `Gemfile`:
+
+```
+gem 'lxc-ruby'
+```
+
+Add routes `config/routes.rb`:
 
 ```ruby
 YourApp::Application.routes.draw do
-    mount LXC::Server.new, :at => "/api/lxc"
+  mount LXC::Server.new, :at => "/api/lxc"
 end
 ```
 
