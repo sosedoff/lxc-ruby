@@ -1,8 +1,14 @@
-# LXC Ruby Wrapper [![Build Status](https://secure.travis-ci.org/sosedoff/lxc-ruby.png?branch=master)](http://travis-ci.org/sosedoff/lxc-ruby)
+# LXC Ruby Wrapper
 
 Ruby wrapper to [LXC](http://lxc.sourceforge.net/) cli tools. 
 
 Provides a simple ruby dsl and json API to manage containers. 
+
+## Build status
+
+This library uses Travis-CI service for automated tests.
+
+[![Build Status](https://secure.travis-ci.org/sosedoff/lxc-ruby.png?branch=master)](http://travis-ci.org/sosedoff/lxc-ruby)
 
 ## Requirements
 
