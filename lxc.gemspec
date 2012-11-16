@@ -1,7 +1,7 @@
 require File.expand_path('../lib/lxc/version', __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "lxc"
+  s.name        = "lxc-ruby"
   s.version     = LXC::VERSION
   s.summary     = "Ruby wrapper to LXC"
   s.description = "Ruby wrapper to manage LXC (Linux Containers)."
