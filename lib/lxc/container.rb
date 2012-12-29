@@ -130,7 +130,7 @@ module LXC
           unless File.exists?(template_path)
             raise ArgumentError, "Template #{path[:template]} does not exist."
           end
-          args += " -t #{path[:template]}"
+          args += " -t #{path[:template]} "
         end
 
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
