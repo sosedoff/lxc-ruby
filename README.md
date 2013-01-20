@@ -21,11 +21,16 @@ was tested on Ubuntu 11.x / 12.04. Additional boxes could be found [here](http:/
 
 ## Installation
 
-As for now this gem is not released yet, so use gem install task:
+Add it to your `Gemfile`:
 
 ```
-rake build
-rake install
+gem 'lxc-ruby'
+```
+
+Or install it manually:
+
+```
+gem install lxc-ruby
 ```
 
 ## Usage
