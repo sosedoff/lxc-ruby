@@ -26,7 +26,7 @@ module LXC
     # Get LXC configuration info
     # @return [Hash] hash containing config groups
     def config
-      str = LXC.run('checkconfig') { 'sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"' }
+      str = LXC.run('checkconfig') { LXC::Shell::REMOVE_COLORS }
       data = str.scan(/^([\w\s]+): (enabled|disabled)$/).map { |r|
         [r.first.downcase.gsub(' ', '_'), r.last == 'enabled']
       }

@@ -43,6 +43,9 @@ module LXC
       'FROZEN'
     ]
 
+    # Terminal command to strip all special color symbols
+    REMOVE_COLORS = 'sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"'
+
     @@use_sudo = false
 
     # Check if LXC is using sudo to run commands
