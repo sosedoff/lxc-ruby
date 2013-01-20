@@ -1,8 +1,6 @@
 # LXC Ruby Wrapper
 
-Ruby wrapper to [LXC](http://lxc.sourceforge.net/) cli tools. 
-
-Provides a simple ruby dsl and json API to manage containers. 
+Ruby wrapper to [Linux Containers](http://lxc.sourceforge.net/) CLI tools
 
 ## Build status
 
@@ -19,7 +17,7 @@ Supported LXC versions:
 - 0.8.0-rc2 - in works  
 
 For testing purposes you can use [Vagrant](http://vagrantup.com/) or [VirtualBox](https://www.virtualbox.org/). Most of functionality
-was tested on Ubuntu 11.04 / 11.10. Additional boxes could be found [here](http://www.vagrantbox.es/)
+was tested on Ubuntu 11.x / 12.04. Additional boxes could be found [here](http://www.vagrantbox.es/)
 
 ## Installation
 
