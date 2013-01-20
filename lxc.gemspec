@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = LXC::VERSION
   s.summary     = "Ruby wrapper to LXC"
   s.description = "Ruby wrapper to manage LXC (Linux Containers)."
-  s.homepage    = "http://github.com/sosedoff/lxc"
+  s.homepage    = "http://github.com/sosedoff/lxc-ruby"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
   
