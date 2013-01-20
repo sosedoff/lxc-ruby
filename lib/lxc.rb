@@ -10,7 +10,7 @@ module LXC
     include LXC::Shell
 
     # Check if binary file is installed
-    # @param [String] name binary filename
+    # @param [String] binary filename
     # @return [Boolean] true if installed
     def binary_installed?(name)
       path = File.join(LXC::Shell::BIN_PREFIX, name)
@@ -34,14 +34,14 @@ module LXC
     end
 
     # Get container information record
-    # @param [name] name container name
+    # @param [name] container name
     # @return [LXC::Container] container instance
     def container(name)
       LXC::Container.new(name)
     end
 
     # Get a list of all available containers
-    # @param [String] filter select containers that match string
+    # @param [String] select containers that match string
     # @return [Array] array of LXC::Containers
     def containers(filter=nil)
       names = LXC.run('ls').split("\n").uniq
