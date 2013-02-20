@@ -21,7 +21,7 @@ describe LXC::Container do
     subject.exists?.should be_false
   end
 
-  context '.status' do
+  describe '#status' do
     it 'returns STOPPED' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
       subject.status.should eq({:state => 'STOPPED', :pid => '-1'})
@@ -33,7 +33,7 @@ describe LXC::Container do
     end
   end
 
-  context '.destroy' do
+  describe '#destroy' do
     it 'raises error if container does not exist' do
       stub_lxc('ls') { "app2" }
       proc { subject.destroy }.
@@ -58,7 +58,7 @@ describe LXC::Container do
     subject.memory_limit.should eq(268435456)
   end
 
-  context '.processes' do
+  describe '#processes' do
     it 'raises error if container is not running' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
 
