@@ -83,4 +83,29 @@ describe LXC::Container do
       p.should have_key('args')
     end
   end
+
+  describe '#stopped?' do
+    context 'when container does not exist' do
+      it 'returns false' do
+        stub_lxc('ls') { "foo-app" }
+        subject.stopped?.should be_false
+      end
+    end
+
+    context 'when container exists' do
+      it 'returns true if stopped' do
+        stub_lxc('ls') { 'app' }
+        stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
+
+        subject.stopped?.should be_true
+      end
+
+      it 'returns false if running' do
+        stub_lxc('ls') { 'app' }
+        stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
+
+        subject.stopped?.should be_false
+      end
+    end
+  end
 end
