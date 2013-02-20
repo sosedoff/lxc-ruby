@@ -45,6 +45,12 @@ module LXC
       status[:state] == 'FROZEN'
     end
 
+    # Check if container is stopped?
+    # @return [Boolean]
+    def stopped?
+      exists? && status[:state] == 'STOPPED'
+    end
+
     # Start container
     # @return [Hash] container status hash
     def start
