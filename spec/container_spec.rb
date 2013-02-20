@@ -13,12 +13,20 @@ describe LXC::Container do
     subject.pid.should be_nil
   end
 
-  it 'should exist' do
-    stub_lxc('ls') { "app\napp2" }
-    subject.exists?.should be_true
+  describe '#exists?' do
+    context 'for existing container' do
+      it 'returns true' do
+        stub_lxc('ls') { "app\napp2" }
+        subject.exists?.should be_true
+      end
+    end
 
-    stub_lxc('ls') { "app2\napp3" }
-    subject.exists?.should be_false
+    context 'for non-existing container' do
+      it 'returns false' do
+        stub_lxc('ls') { "app2\napp3" }
+        subject.exists?.should be_false
+      end
+    end
   end
 
   describe '#status' do
