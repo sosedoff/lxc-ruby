@@ -74,6 +74,7 @@ c.exists? # => true
 
 # Status helpers
 c.running? # => true
+c.stopped? # => false
 c.frozen?  # => false
 
 # Start and stop containers
