@@ -85,6 +85,13 @@ c.stop   # => {:state => 'STOPPED', :pid => -1}
 c.freeze
 c.unfreeze
 
+# Destroy container
+c.destroy # => true
+```
+
+Container metrics:
+
+```ruby
 # Get container memory usage (in bytes)
 c.memory_usage
 c.memory_limit
@@ -102,9 +109,6 @@ c.processes
 #   "memory"=>"0.1",
 #   "command"=>"/sbin/init",
 #   "args"=>""}]
-
-# Destroy container
-c.destroy # => true
 ```
 
 To create a new container:
