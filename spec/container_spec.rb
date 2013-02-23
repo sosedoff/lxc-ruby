@@ -142,4 +142,26 @@ describe LXC::Container do
       end
     end
   end
+
+  describe '#cpu_usage' do
+    context 'when container is running' do
+      before do
+        stub_lxc("cgroup", "-n", "app", "cpuacct.usage") { "4239081939568\n" }
+      end
+
+      it 'returns usage in seconds' do
+        subject.cpu_usage.should eq 4239.0819
+      end
+    end
+
+    context 'when container is stopped' do
+      before do
+        stub_lxc("cgroup", "-n", "app", "cpuacct.usage") { "\n" }
+      end
+
+      it 'returns nil' do
+        subject.cpu_usage.should be_nil
+      end
+    end
+  end
 end
