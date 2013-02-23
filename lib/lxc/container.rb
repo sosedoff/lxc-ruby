@@ -118,7 +118,7 @@ module LXC
     # @return [Float]
     def cpu_usage
       result = LXC.run('cgroup', '-n', name, "cpuacct.usage").strip
-      result.empty? ? nil : (result.to_i / 1E9).round(4)
+      result.empty? ? nil : Float('%.4f' % (result.to_i / 1E9))
     end
 
     # Get container processes
