@@ -131,5 +131,15 @@ describe LXC::Container do
         subject.cpu_shares.should eq 1024
       end
     end
+
+    context 'when container is stopped' do
+      before do
+        stub_lxc("cgroup", "-n", "app", "cpu.shares") { "\n" }
+      end
+
+      it 'returns nil' do
+        subject.cpu_shares.should be_nil
+      end
+    end
   end
 end

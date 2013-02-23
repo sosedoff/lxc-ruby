@@ -110,7 +110,8 @@ module LXC
     # Get container CPU utilization
     # @return [Integer]
     def cpu_shares
-      LXC.run('cgroup', '-n', name, "cpu.shares").strip.to_i
+      result = LXC.run('cgroup', '-n', name, "cpu.shares").strip
+      result.empty? ? nil : result.to_i
     end
 
     # Get container processes
