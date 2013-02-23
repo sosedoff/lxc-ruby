@@ -120,4 +120,16 @@ describe LXC::Container do
       end
     end
   end
+
+  describe '#cpu_shares' do
+    context 'when container is running' do
+      before do
+        stub_lxc("cgroup", "-n", "app", "cpu.shares") { "1024\n" }
+      end
+
+      it 'returns cpu shares value' do
+        subject.cpu_shares.should eq 1024
+      end
+    end
+  end
 end

@@ -107,6 +107,12 @@ module LXC
       LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes').strip.to_i
     end
 
+    # Get container CPU utilization
+    # @return [Integer]
+    def cpu_shares
+      LXC.run('cgroup', '-n', name, "cpu.shares").strip.to_i
+    end
+
     # Get container processes
     # @return [Array] list of all processes
     def processes
