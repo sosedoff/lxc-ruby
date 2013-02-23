@@ -54,14 +54,14 @@ module LXC
     # Start container
     # @return [Hash] container status hash
     def start
-      LXC.run('start', '-d', '-n', name)
+      run('start', '-d')
       status
     end
 
     # Stop container
     # @return [Hash] container status hash
     def stop
-      LXC.run('stop', '-n', name)
+      run('stop')
       status
     end
 
@@ -75,14 +75,14 @@ module LXC
     # Freeze container
     # @return [Hash] container status hash
     def freeze
-      LXC.run('freeze', '-n', name)
+      run('freeze')
       status
     end
 
     # Unfreeze container
     # @return [Hash] container status hash
     def unfreeze
-      LXC.run('unfreeze', '-n', name)
+      run('unfreeze')
       status
     end
 
@@ -92,32 +92,33 @@ module LXC
       if !LXC::Shell.valid_state?(state)
         raise ArgumentError, "Invalid container state: #{state}"
       end
-      LXC.run('wait', '-n', name, '-s', state)
+
+      run('wait', '-s', state)
     end
 
     # Get container memory usage in bytes
     # @return [Integer]
     def memory_usage
-      LXC.run('cgroup', '-n', name, 'memory.usage_in_bytes').strip.to_i
+      run('cgroup', 'memory.usage_in_bytes').strip.to_i
     end
 
     # Get container memory limit in bytes
     # @return [Integer]
     def memory_limit
-      LXC.run('cgroup', '-n', name, 'memory.limit_in_bytes').strip.to_i
+      run('cgroup', 'memory.limit_in_bytes').strip.to_i
     end
 
     # Get container cpu shares
     # @return [Integer]
     def cpu_shares
-      result = LXC.run('cgroup', '-n', name, "cpu.shares").strip
+      result = run('cgroup', "cpu.shares").strip
       result.empty? ? nil : result.to_i
     end
 
     # Get container cpu usage in seconds
     # @return [Float]
     def cpu_usage
-      result = LXC.run('cgroup', '-n', name, "cpuacct.usage").strip
+      result = run('cgroup', "cpuacct.usage").strip
       result.empty? ? nil : Float('%.4f' % (result.to_i / 1E9))
     end
 
@@ -125,7 +126,8 @@ module LXC
     # @return [Array] list of all processes
     def processes
       raise ContainerError, "Container is not running" if !running?
-      str = LXC.run('ps', '-n', name, '--', '-eo pid,user,%cpu,%mem,args').strip
+
+      str = run('ps', '--', '-eo pid,user,%cpu,%mem,args').strip
       lines = str.split("\n") ; lines.delete_at(0)
       lines.map { |l| parse_process_line(l) }
     end
@@ -135,6 +137,7 @@ module LXC
     # @return [Boolean]
     def create(path)
       raise ContainerError, "Container already exists." if exists?
+
       if path.is_a?(Hash)
         args = "-n #{name}"
 
@@ -200,20 +203,26 @@ module LXC
     #
     def destroy(force=false)
       raise ContainerError, "Container does not exist." unless exists?
+
       if running?
         if force
           # This will force stop and destroy container automatically
-          LXC.run('destroy', '-n', '-f', name)
+          run('destroy', '-f')
         else
           raise ContainerError, "Container is running. Stop it first or use force=true"
         end
       else
-        LXC.run('destroy', '-n', name)
+        run('destroy')
       end  
+
       !exists?
     end
 
     private
+
+    def run(command, *args)
+      LXC.run(command, "-n", name, *args)
+    end
 
     def parse_process_line(line)
       chunks = line.split(' ')

@@ -164,4 +164,21 @@ describe LXC::Container do
       end
     end
   end
+
+  describe '#run' do
+    let(:subject) do
+      class Kontainer < LXC::Container
+        def info
+          run('info')
+        end
+      end
+
+      Kontainer.new('app')
+    end
+
+    it 'executes a command with container name' do
+      stub_lxc("info", "-n", "app") { "info" }
+      subject.info.should eq "info"
+    end
+  end
 end
