@@ -111,14 +111,14 @@ module LXC
     # Get container cpu shares
     # @return [Integer]
     def cpu_shares
-      result = run('cgroup', "cpu.shares").strip
+      result = run('cgroup', "cpu.shares").to_s.strip
       result.empty? ? nil : result.to_i
     end
 
     # Get container cpu usage in seconds
     # @return [Float]
     def cpu_usage
-      result = run('cgroup', "cpuacct.usage").strip
+      result = run('cgroup', "cpuacct.usage").to_s.strip
       result.empty? ? nil : Float('%.4f' % (result.to_i / 1E9))
     end
 
