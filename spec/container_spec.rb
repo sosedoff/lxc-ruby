@@ -141,6 +141,16 @@ describe LXC::Container do
         subject.cpu_shares.should be_nil
       end
     end
+
+    context 'when run command is nil' do
+      before do
+        subject.stub!(:run).and_return(nil)
+      end
+
+      it 'should return nil' do
+        subject.cpu_shares.should be_nil
+      end
+    end
   end
 
   describe '#cpu_usage' do
@@ -160,6 +170,16 @@ describe LXC::Container do
       end
 
       it 'returns nil' do
+        subject.cpu_usage.should be_nil
+      end
+    end
+
+    context 'when run command is nil' do
+      before do
+        subject.stub!(:run).and_return(nil)
+      end
+
+      it 'should return nil' do
         subject.cpu_usage.should be_nil
       end
     end
