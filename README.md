@@ -89,6 +89,10 @@ c.unfreeze
 c.memory_usage
 c.memory_limit
 
+# Get container cpu shares and usage (in seconds)
+c.cpu_shares # => 1024
+c.cpu_usage  # => 4312.08
+
 # Get running processes
 c.processes 
 # => 
