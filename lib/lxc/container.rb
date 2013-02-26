@@ -30,7 +30,7 @@ module LXC
     # Check if container exists
     # @return [Boolean]
     def exists?
-      run('ls').split("\n").uniq.include?(name)
+      LXC.run('ls').split("\n").uniq.include?(name)
     end
 
     # Check if container is running
