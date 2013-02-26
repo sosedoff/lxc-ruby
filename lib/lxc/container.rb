@@ -21,7 +21,7 @@ module LXC
     # Get current status of container
     # @return [Hash] hash with :state and :pid attributes
     def status
-      str    = LXC.run('info', '-n', name)
+      str    = run('info')
       @state = str.scan(/^state:\s+([\w]+)$/).flatten.first
       @pid   = str.scan(/^pid:\s+(-?[\d]+)$/).flatten.first
       {:state => @state, :pid => @pid}
@@ -30,7 +30,7 @@ module LXC
     # Check if container exists
     # @return [Boolean]
     def exists?
-      LXC.run('ls').split("\n").uniq.include?(name)
+      run('ls').split("\n").uniq.include?(name)
     end
 
     # Check if container is running
@@ -163,7 +163,7 @@ module LXC
         exists?
       else
         raise ArgumentError, "File #{path} does not exist." unless File.exists?(path)
-        LXC.run('create', '-n', name, '-f', path)
+        LXC.run('create', '-f', path)
         exists?
       end
     end
@@ -190,7 +190,7 @@ module LXC
         raise ContainerError, "Source container does not exist."
       end
 
-      LXC.run('clone', '-o', source, '-n', name)
+      run('clone', '-o', source)
       exists?
     end
 
