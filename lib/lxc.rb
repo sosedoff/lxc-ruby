@@ -1,13 +1,13 @@
 require 'posix/spawn'
-
 require 'lxc/version'
 require 'lxc/errors'
-require 'lxc/shell'
-require 'lxc/configuration_options'
-require 'lxc/configuration'
-require 'lxc/container'
 
 module LXC
+  autoload :Shell,                'lxc/shell'
+  autoload :Configuration,        'lxc/configuration'
+  autoload :ConfigurationOptions, 'lxc/configuration_options'
+  autoload :Container,            'lxc/container'
+
   # Check if binary file is installed
   # @param [String] binary filename
   # @return [Boolean] true if installed
