@@ -1,8 +1,6 @@
 module LXC
   class Container
     attr_accessor :name
-    attr_reader   :state
-    attr_reader   :pid
 
     # Initialize a new LXC::Container instance
     # @param [String] name container name
@@ -14,17 +12,18 @@ module LXC
     # Get container attributes hash
     # @return [Hash]
     def to_hash
-      status
-      {'name' => name, 'state' => state, 'pid' => pid}
+      status.to_hash.merge('name' => name)
     end
 
     # Get current status of container
     # @return [Hash] hash with :state and :pid attributes
     def status
-      str    = run('info')
-      @state = str.scan(/^state:\s+([\w]+)$/).flatten.first
-      @pid   = str.scan(/^pid:\s+(-?[\d]+)$/).flatten.first
-      {:state => @state, :pid => @pid}
+      output = run('info')
+
+      LXC::Status.new(
+        output.scan(/^state:\s+([\w]+)$/).flatten.first,
+        output.scan(/^pid:\s+(-?[\d]+)$/).flatten.first
+      )
     end
 
     # Check if container exists
@@ -36,19 +35,19 @@ module LXC
     # Check if container is running
     # @return [Boolean]
     def running?
-      status[:state] == 'RUNNING'
+      status.state == 'RUNNING'
     end
 
     # Check if container is frozen
     # @return [Boolean]
     def frozen?
-      status[:state] == 'FROZEN'
+      status.state == 'FROZEN'
     end
 
     # Check if container is stopped?
     # @return [Boolean]
     def stopped?
-      exists? && status[:state] == 'STOPPED'
+      exists? && status.state == 'STOPPED'
     end
 
     # Start container
@@ -68,8 +67,8 @@ module LXC
     # Restart container
     # @return [Hash] container status hash
     def restart
-      stop
-      start
+      stop ; start
+      status
     end
 
     # Freeze container
@@ -87,9 +86,9 @@ module LXC
     end
 
     # Wait for container to change status
-    # @param [String] state state name
+    # @param [String] state name
     def wait(state)
-      if !LXC::Shell.valid_state?(state)
+      if !LXC::Shell.valid_state?(status.state)
         raise ArgumentError, "Invalid container state: #{state}"
       end
 

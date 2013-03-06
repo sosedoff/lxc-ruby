@@ -3,14 +3,11 @@ require 'spec_helper'
 describe LXC::Container do
   subject { LXC::Container.new('app') }
 
-  it { should respond_to(:name) }
-  it { should respond_to(:state) }
-  it { should respond_to(:pid) }
+  it { should respond_to :name }
+  it { should respond_to :status }
 
   it 'has proper default attributes' do
-    subject.name.should eq('app')
-    subject.state.should be_nil
-    subject.pid.should be_nil
+    subject.name.should eq 'app'
   end
 
   describe '#exists?' do
@@ -32,12 +29,12 @@ describe LXC::Container do
   describe '#status' do
     it 'returns STOPPED' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
-      subject.status.should eq({:state => 'STOPPED', :pid => '-1'})
+      subject.status.should eq LXC::Status.new('STOPPED', '-1')
     end
 
     it 'returns RUNNING' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
-      subject.status.should eq({:state => 'RUNNING', :pid => '2125'})
+      subject.status.should eq LXC::Status.new('RUNNING', '2125')
     end
   end
 

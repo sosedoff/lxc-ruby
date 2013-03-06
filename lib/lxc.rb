@@ -7,6 +7,7 @@ module LXC
   autoload :Configuration,        'lxc/configuration'
   autoload :ConfigurationOptions, 'lxc/configuration_options'
   autoload :Container,            'lxc/container'
+  autoload :Status,               'lxc/status'
 
   class << self
     include LXC::Shell
