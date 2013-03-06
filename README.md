@@ -1,12 +1,6 @@
-# LXC Ruby Wrapper
+# LXC Ruby Wrapper [![Build Status](https://secure.travis-ci.org/sosedoff/lxc-ruby.png?branch=master)](http://travis-ci.org/sosedoff/lxc-ruby)
 
-Ruby wrapper to [Linux Containers](http://lxc.sourceforge.net/) CLI tools
-
-## Build status
-
-This library uses Travis-CI service for automated tests.
-
-[![Build Status](https://secure.travis-ci.org/sosedoff/lxc-ruby.png?branch=master)](http://travis-ci.org/sosedoff/lxc-ruby)
+Ruby library to integrate with [Linux Containers](http://lxc.sourceforge.net/) CLI tools
 
 ## Requirements
 
@@ -16,8 +10,8 @@ Supported LXC versions:
 - 0.8.0-rc1
 - 0.8.0-rc2 - in works  
 
-For testing purposes you can use [Vagrant](http://vagrantup.com/) or [VirtualBox](https://www.virtualbox.org/). Most of functionality
-was tested on Ubuntu 11.x / 12.04. Additional boxes could be found [here](http://www.vagrantbox.es/)
+For testing purposes you can use [Vagrant](http://vagrantup.com/) with [VirtualBox](https://www.virtualbox.org/). Most of functionality
+was tested on 64-bit Ubuntu 11.10 and 12.04. Additional boxes could be found [here](http://www.vagrantbox.es/).
 
 ## Installation
 
