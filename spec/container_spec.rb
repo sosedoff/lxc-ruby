@@ -5,6 +5,8 @@ describe LXC::Container do
 
   it { should respond_to :name }
   it { should respond_to :status }
+  it { should respond_to :state }
+  it { should respond_to :pid }
 
   it 'has proper default attributes' do
     subject.name.should eq 'app'

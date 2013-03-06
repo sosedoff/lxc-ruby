@@ -4,7 +4,7 @@ module LXC
 
     def initialize(state, pid)
       @state = state
-      @pid = pid
+      @pid = Integer(pid)
     end
 
     def to_hash

@@ -26,6 +26,18 @@ module LXC
       )
     end
 
+    # Get state of the container
+    # @return [String]
+    def state
+      status.state
+    end
+
+    # Get PID of the container
+    # @return [Integer]
+    def pid
+      status.pid
+    end
+
     # Check if container exists
     # @return [Boolean]
     def exists?
