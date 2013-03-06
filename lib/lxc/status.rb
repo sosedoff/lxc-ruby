@@ -3,7 +3,7 @@ module LXC
     attr_reader :state, :pid
 
     def initialize(state, pid)
-      @state = state
+      @state = state.to_s.downcase
       @pid = Integer(pid)
     end
 
