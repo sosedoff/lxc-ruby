@@ -27,58 +27,71 @@ describe LXC do
     end
   end
 
-  it 'returns installed version' do
-    stub_lxc('version') { fixture('lxc-version.txt') }
-    LXC.version.should eq('0.7.5')
+  describe '.version' do
+    it 'returns installed LXC version' do
+      stub_lxc('version') { fixture('lxc-version.txt') }
+      LXC.version.should eq('0.7.5')
+    end
   end
 
-  it 'returns config hash with attributes' do
-    stub_lxc('checkconfig') { fixture('lxc-checkconfig.txt') }
+  describe '.config' do
+    it 'returns config hash with attributes' do
+      stub_lxc('checkconfig') { fixture('lxc-checkconfig.txt') }
 
-    info = LXC.config
-    info.should be_a Hash
+      info = LXC.config
+      info.should be_a Hash
 
-    info['namespaces'].should be_true
-    info['utsname_namespace'].should be_true
-    info['ipc_namespace'].should be_true
-    info['pid_namespace'].should be_true
-    info['user_namespace'].should be_true
-    info['network_namespace'].should be_true
-    info['cgroup'].should be_true
-    info['cgroup_clone_children_flag'].should be_true
-    info['cgroup_device'].should be_true
-    info['cgroup_sched'].should be_true
-    info['cgroup_cpu_account'].should be_true
-    info['cgroup_memory_controller'].should be_true
-    info['cgroup_cpuset'].should be_true
-    info['veth_pair_device'].should be_true
-    info['macvlan'].should be_true
-    info['vlan'].should be_true
-    info['file_capabilities'].should be_true
+      info['namespaces'].should be_true
+      info['utsname_namespace'].should be_true
+      info['ipc_namespace'].should be_true
+      info['pid_namespace'].should be_true
+      info['user_namespace'].should be_true
+      info['network_namespace'].should be_true
+      info['cgroup'].should be_true
+      info['cgroup_clone_children_flag'].should be_true
+      info['cgroup_device'].should be_true
+      info['cgroup_sched'].should be_true
+      info['cgroup_cpu_account'].should be_true
+      info['cgroup_memory_controller'].should be_true
+      info['cgroup_cpuset'].should be_true
+      info['veth_pair_device'].should be_true
+      info['macvlan'].should be_true
+      info['vlan'].should be_true
+      info['file_capabilities'].should be_true
+    end
   end
 
-  it 'returns a single container' do
-    c = LXC.container('foo')
-    c.should be_a LXC::Container
-    c.name.should eq('foo')
+  describe '.container' do
+    it 'returns a container for name' do
+      c = LXC.container('foo')
+
+      c.should be_a LXC::Container
+      c.name.should eq('foo')
+    end
   end
 
-  it 'returns all available containers' do
-    stub_lxc('ls') { "vm0\nvm1\nvm0" }
-    list = LXC.containers
-    list.should be_an Array
-    list.size.should eq(2)
-    list.first.should be_a LXC::Container
-    list.first.name.should eq('vm0')
+  describe '.containers' do
+    it 'returns all available containers' do
+      stub_lxc('ls') { "vm0\nvm1\nvm0" }
+    
+      list = LXC.containers
+      list.should be_an Array
+      list.size.should eq(2)
+      list.first.should be_a LXC::Container
+      list.first.name.should eq('vm0')
+    end
+
+    context 'with argument' do
+      it 'returns containers filtered by name' do
+        stub_lxc('ls') { "vm0\nvm1\nfoo\n"}
+
+        list = LXC.containers("vm")
+        list.size.should eq(2)
+      end
+    end
   end
 
-  it 'returns filtered list of containers' do
-    stub_lxc('ls') { "vm0\nvm1\nfoo\n"}
-    list = LXC.containers("vm")
-    list.size.should eq(2)
-  end
-
-  context 'sudo' do
+  describe '.sudo' do
     class Foo
       include LXC::Shell
     end
@@ -96,7 +109,7 @@ describe LXC do
     end
   end
 
-  context '.use_sudo' do
+  describe '.use_sudo' do
     class Bar
       include LXC::Shell
     end
