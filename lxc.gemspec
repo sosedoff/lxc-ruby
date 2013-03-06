@@ -8,6 +8,8 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/sosedoff/lxc-ruby"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
+
+  s.add_dependency 'posix-spawn', '~> 0.3.6'
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec',     '~> 2.13'
