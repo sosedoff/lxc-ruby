@@ -8,6 +8,10 @@ module LXC
   autoload :ConfigurationOptions, 'lxc/configuration_options'
   autoload :Container,            'lxc/container'
 
+  class << self
+    include LXC::Shell
+  end
+
   # Check if binary file is installed
   # @param [String] binary filename
   # @return [Boolean] true if installed
@@ -19,8 +23,8 @@ module LXC
   # Check if all binaries are present in the system
   # @return [Boolean] true if binary files are found
   def self.installed?
-    result = BIN_FILES.map { |f| binary_installed?(f) }.uniq
-    result.include?(false)
+    result = LXC::Shell::BIN_FILES.map { |f| binary_installed?(f) }.uniq
+    !result.include?(false)
   end
 
   # Get LXC configuration info
@@ -46,7 +50,7 @@ module LXC
   def self.containers(filter=nil)
     names = LXC.run('ls').split("\n").uniq
     names.delete_if { |v| !v.include?(filter) } if filter.kind_of?(String)
-    names.map { |name| Container.new(name) }
+    names.map { |name| LXC::Container.new(name) }
   end
 
   # Get currently installeded LXC version
