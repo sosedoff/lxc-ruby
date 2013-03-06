@@ -78,6 +78,7 @@ module LXC
     # provide a block that returns string
     def run(command, *args)
       command_name = "lxc-#{command}"
+
       unless BIN_FILES.include?(command_name)
         raise ArgumentError, "Invalid command: #{command_name}."
       end
@@ -86,7 +87,9 @@ module LXC
       cmd += "sudo " if use_sudo == true
       cmd += "#{command_name} #{args.join(' ')}".strip
       cmd += " | #{yield}" if block_given?
-      `#{cmd.strip}`
+
+      child = POSIX::Spawn::Child.new(cmd.strip)
+      child.out
     end
   end
 end

@@ -92,27 +92,25 @@ describe LXC do
   end
 
   describe '.sudo' do
-    class Foo
-      include LXC::Shell
-    end
-
-    before do
-      LXC.use_sudo = true
+    before { LXC.use_sudo = true }
+    let(:result) do 
+      klass = Struct.new(:out)
+      klass.new(fixture('lxc-version.txt'))
     end
 
     it 'executes command using sudo' do
       LXC.use_sudo.should be_true
 
-      bar = Foo.new
-      bar.should_receive(:'`').with('sudo lxc-version').and_return(fixture('lxc-version.txt'))
-      bar.run('version').should_not be_empty
+      POSIX::Spawn::Child.stub(:new).
+        with('sudo lxc-version').
+        and_return(result)
+
+      LXC.run('version').should eq 'lxc version: 0.7.5'
     end
   end
 
   describe '.use_sudo' do
-    class Bar
-      include LXC::Shell
-    end
+    class Bar ; include LXC::Shell ; end
 
     it 'should be true' do
       foo = Bar.new

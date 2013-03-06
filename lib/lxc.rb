@@ -1,3 +1,5 @@
+require 'posix/spawn'
+
 require 'lxc/version'
 require 'lxc/errors'
 require 'lxc/shell'
