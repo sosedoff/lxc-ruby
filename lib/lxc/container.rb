@@ -47,19 +47,19 @@ module LXC
     # Check if container is running
     # @return [Boolean]
     def running?
-      status.state == 'RUNNING'
+      status.state == 'running'
     end
 
     # Check if container is frozen
     # @return [Boolean]
     def frozen?
-      status.state == 'FROZEN'
+      status.state == 'frozen'
     end
 
     # Check if container is stopped?
     # @return [Boolean]
     def stopped?
-      exists? && status.state == 'STOPPED'
+      exists? && status.state == 'stopped'
     end
 
     # Start container
