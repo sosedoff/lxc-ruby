@@ -182,12 +182,13 @@ module LXC
     # @return [LXC::Container] new container instance
     def clone_to(target)
       raise ContainerError, "Container does not exist." unless exists?
-      if self.class.new(target).exists?
+
+      if LXC.container(target).exists?
         raise ContainerError, "New container already exists."
       end
 
       LXC.run('clone', '-o', name, '-n', target)
-      self.class.new target
+      LXC.container(target)
     end
 
     # Create a new container from an existing container
@@ -195,7 +196,8 @@ module LXC
     # @return [Boolean]
     def clone_from(source)
       raise ContainerError, "Container already exists." if exists?
-      unless self.class.new(source).exists?
+
+      unless LXC.container(source).exists?
         raise ContainerError, "Source container does not exist."
       end
 
