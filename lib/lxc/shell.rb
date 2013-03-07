@@ -84,9 +84,9 @@ module LXC
       end
 
       cmd = ""
-      cmd += "sudo " if use_sudo == true
-      cmd += "#{command_name} #{args.join(' ')}".strip
-      cmd += " | #{yield}" if block_given?
+      cmd << "sudo " if use_sudo == true
+      cmd << "#{command_name} #{args.join(' ')}".strip
+      cmd << " | #{yield}" if block_given?
 
       child = POSIX::Spawn::Child.new(cmd.strip)
       child.out
