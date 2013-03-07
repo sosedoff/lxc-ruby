@@ -7,11 +7,11 @@ Ruby library to integrate with [Linux Containers](http://lxc.sourceforge.net/) C
 Supported LXC versions:
 
 - 0.7.5
-- 0.8.0-rc1
-- 0.8.0-rc2 - in works  
+- 0.8.0  
 
-For testing purposes you can use [Vagrant](http://vagrantup.com/) with [VirtualBox](https://www.virtualbox.org/). Most of functionality
-was tested on 64-bit Ubuntu 11.10 and 12.04. Additional boxes could be found [here](http://www.vagrantbox.es/).
+For testing purposes you can use [Vagrant](http://vagrantup.com/) with [VirtualBox](https://www.virtualbox.org/). 
+Most of the functionality was tested on 64-bit Ubuntu 11.10 and 12.04. Recommended version is 12.04. 
+Additional boxes could be found [here](http://www.vagrantbox.es/).
 
 ## Installation
 
@@ -58,10 +58,13 @@ Container instance is a simple abstaction for lxc's container tools:
 c = LXC.container('foo')
 
 # Get current status of container
-c.status # => {:state => 'RUNNING', :pid => 1234}
+c.state  # => 'running'
+c.pid    # => 1234
+c.status # => <LXC::Status @state='running' @pid=123456>
 
 # Check if container exists?
-# this is needed since lxc does not raise any errors if container is
+#
+# This is needed since lxc does not raise any errors if container is
 # not present in the system, and returns the same result as if container
 # is actually stopped
 c.exists? # => true
@@ -72,8 +75,8 @@ c.stopped? # => false
 c.frozen?  # => false
 
 # Start and stop containers
-c.start  # => {:state => 'RUNNING', :pid => 1234}
-c.stop   # => {:state => 'STOPPED', :pid => -1}
+c.start # will be started in daemonized mode
+c.stop
 
 # Free and unfreeze (also returns current status)
 c.freeze
