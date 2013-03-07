@@ -19,11 +19,9 @@ module LXC
     # @return [Hash] hash with :state and :pid attributes
     def status
       output = run('info')
+      result = output.scan(/^state:\s+([\w]+)|pid:\s+(-?[\d]+)$/).flatten
 
-      LXC::Status.new(
-        output.scan(/^state:\s+([\w]+)$/).flatten.first,
-        output.scan(/^pid:\s+(-?[\d]+)$/).flatten.first
-      )
+      LXC::Status.new(result.first, result.last)
     end
 
     # Get state of the container
