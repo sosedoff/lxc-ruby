@@ -3,6 +3,10 @@ require 'lxc/version'
 require 'lxc/errors'
 
 module LXC
+  class Error              < StandardError ; end
+  class ContainerError     < Error ; end
+  class ConfigurationError < Error ; end
+
   autoload :Shell,                'lxc/shell'
   autoload :Configuration,        'lxc/configuration'
   autoload :ConfigurationOptions, 'lxc/configuration_options'
@@ -32,9 +36,11 @@ module LXC
   # @return [Hash] hash containing config groups
   def self.config
     str = LXC.run('checkconfig') { LXC::Shell::REMOVE_COLORS }
+
     data = str.scan(/^([\w\s]+): (enabled|disabled)$/).map { |r|
       [r.first.downcase.gsub(' ', '_'), r.last == 'enabled']
     }
+
     Hash[data]
   end
 
@@ -50,6 +56,7 @@ module LXC
   # @return [Array] array of LXC::Containers
   def self.containers(filter=nil)
     names = LXC.run('ls').split("\n").uniq
+    
     names.delete_if { |v| !v.include?(filter) } if filter.kind_of?(String)
     names.map { |name| LXC::Container.new(name) }
   end
