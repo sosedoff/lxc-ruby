@@ -1,6 +1,5 @@
 require 'posix/spawn'
 require 'lxc/version'
-require 'lxc/errors'
 
 module LXC
   class Error              < StandardError ; end
@@ -56,7 +55,7 @@ module LXC
   # @return [Array] array of LXC::Containers
   def self.containers(filter=nil)
     names = LXC.run('ls').split("\n").uniq
-    
+
     names.delete_if { |v| !v.include?(filter) } if filter.kind_of?(String)
     names.map { |name| LXC::Container.new(name) }
   end
