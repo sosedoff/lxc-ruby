@@ -239,20 +239,13 @@ module LXC
       chunks = line.split(' ')
       chunks.delete_at(0)
 
-      pid     = chunks.shift
-      user    = chunks.shift
-      cpu     = chunks.shift
-      mem     = chunks.shift
-      command = chunks.shift
-      args    = chunks.join(' ')
-
       {
-        'pid'     => pid,
-        'user'    => user,
-        'cpu'     => cpu,
-        'memory'  => mem,
-        'command' => command,
-        'args'    => args
+        'pid'     => chunks.shift,
+        'user'    => chunks.shift,
+        'cpu'     => chunks.shift,
+        'memory'  => chunks.shift,
+        'command' => chunks.shift,
+        'args'    => chunks.join(' ')
       }
     end
   end
