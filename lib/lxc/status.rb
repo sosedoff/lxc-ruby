@@ -7,12 +7,16 @@ module LXC
       @pid = Integer(pid)
     end
 
+    def == (instance)
+      instance.pid == pid && instance.state == state
+    end
+
     def to_hash
       {'state' => state, 'pid' => pid}
     end
 
-    def == (instance)
-      instance.pid == pid && instance.state == state
+    def to_s
+      "state=#{state} pid=#{pid}"
     end
   end
 end

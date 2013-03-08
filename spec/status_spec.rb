@@ -22,4 +22,12 @@ describe LXC::Status do
       result.should include 'state', 'pid'
     end
   end
+
+  describe '#to_s' do
+    let(:status) { LXC::Status.new('RUNNING', '12345') }
+
+    it 'returns a string representation' do
+      status.to_s.should eq 'state=running pid=12345'
+    end
+  end
 end
