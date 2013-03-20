@@ -8,8 +8,10 @@ describe LXC::Container do
   it { should respond_to :state }
   it { should respond_to :pid }
 
-  it 'has proper default attributes' do
-    subject.name.should eq 'app'
+  describe '#name' do
+    it 'should be set to "app"' do
+      subject.name.should eq 'app'
+    end
   end
 
   describe '#exists?' do
