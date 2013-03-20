@@ -54,7 +54,7 @@ module LXC
       status.state == 'frozen'
     end
 
-    # Check if container is stopped?
+    # Check if container is stopped
     # @return [Boolean]
     def stopped?
       exists? && status.state == 'stopped'
@@ -213,12 +213,16 @@ module LXC
     # it will be stopped first. Otherwise it will raise exception.
     #
     def destroy(force=false)
-      raise ContainerError, "Container does not exist." unless exists?
+      unless exists?
+        raise ContainerError, "Container does not exist."
+      end
 
       if running?
-        stop if force
-      else
-        raise ContainerError, "Container is running. Stop it first or use force=true"
+        if force == true
+          stop
+        else
+          raise ContainerError, "Container is running. Stop it first or use force=true"
+        end  
       end
 
       run('destroy')

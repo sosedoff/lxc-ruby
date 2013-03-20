@@ -45,15 +45,34 @@ describe LXC::Container do
   describe '#destroy' do
     it 'raises error if container does not exist' do
       stub_lxc('ls') { "app2" }
-      proc { subject.destroy }.
-        should raise_error LXC::ContainerError, "Container does not exist."
+
+      expect { 
+        subject.destroy 
+      }.to raise_error LXC::ContainerError, "Container does not exist."
     end
 
     it 'raises error if container is running' do
-      stub_lxc('ls') { "app" }
-      stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
-      proc { subject.destroy }.
-        should raise_error LXC::ContainerError, "Container is running. Stop it first or use force=true"
+      subject.stub(:exists?).and_return(true)
+      subject.stub(:running?).and_return(true)
+
+      expect { 
+        subject.destroy 
+      }.to raise_error LXC::ContainerError, "Container is running. Stop it first or use force=true"  
+    end
+
+    context 'with force=true' do
+      before do
+        stub_lxc('ls') { 'app' }
+        stub_lxc('info', '-n', 'app') { fixture 'lxc-info-running.txt' }
+        stub_lxc('stop', '-n', 'app') { '' }
+        stub_lxc('info', '-n', 'app') { fixture 'lxc-info-stopped.txt' }
+        stub_lxc('destroy', '-n', 'app') { '' }
+        stub_lxc('ls') { '' }
+      end
+
+      it 'stops and destroys container' do
+        subject.destroy(true).should eq true
+      end
     end
   end
 
