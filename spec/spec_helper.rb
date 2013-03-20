@@ -14,8 +14,8 @@ end
 def stub_lxc(command, *args)
   output = yield
 
-  LXC.should_receive(:run)
-    .exactly(1).times
-    .with(command, *args)
-    .and_return(output)
+  LXC.should_receive(:run).
+    exactly(1).times.
+    with(command, *args).
+    and_return(output)
 end
