@@ -94,8 +94,9 @@ describe LXC::Container do
     it 'raises error if container is not running' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
 
-      proc { subject.processes }.
-        should raise_error LXC::ContainerError, "Container is not running"
+      expect { 
+        subject.processes 
+      }.to raise_error LXC::ContainerError, "Container is not running"
     end
  
     it 'returns list of all processes' do
