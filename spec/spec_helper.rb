@@ -1,4 +1,6 @@
 $:.unshift File.expand_path("../..", __FILE__)
+require 'simplecov'
+SimpleCov.start
 
 require 'lib/lxc'
 
