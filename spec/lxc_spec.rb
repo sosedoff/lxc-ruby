@@ -18,19 +18,19 @@ describe LXC do
     end
 
     it 'returns true if all files are found' do
-      LXC.installed?.should be_true
+      expect(LXC.installed?).to be_true
     end
 
     it 'returns false on missing files' do
       FileUtils.rm("/tmp/lxc/lxc-version")
-      LXC.installed?.should be_false
+      expect(LXC.installed?).to be_false
     end
   end
 
   describe '.version' do
     it 'returns installed LXC version' do
       stub_lxc('version') { fixture('lxc-version.txt') }
-      LXC.version.should eq('0.7.5')
+      expect(LXC.version).to eq('0.7.5')
     end
   end
 
@@ -39,25 +39,25 @@ describe LXC do
       stub_lxc('checkconfig') { fixture('lxc-checkconfig.txt') }
 
       info = LXC.config
-      info.should be_a Hash
+      expect(info).to be_a(Hash)
 
-      info['namespaces'].should be_true
-      info['utsname_namespace'].should be_true
-      info['ipc_namespace'].should be_true
-      info['pid_namespace'].should be_true
-      info['user_namespace'].should be_true
-      info['network_namespace'].should be_true
-      info['cgroup'].should be_true
-      info['cgroup_clone_children_flag'].should be_true
-      info['cgroup_device'].should be_true
-      info['cgroup_sched'].should be_true
-      info['cgroup_cpu_account'].should be_true
-      info['cgroup_memory_controller'].should be_true
-      info['cgroup_cpuset'].should be_true
-      info['veth_pair_device'].should be_true
-      info['macvlan'].should be_true
-      info['vlan'].should be_true
-      info['file_capabilities'].should be_true
+      expect(info['namespaces']).to be_true
+      expect(info['utsname_namespace']).to be_true
+      expect(info['ipc_namespace']).to be_true
+      expect(info['pid_namespace']).to be_true
+      expect(info['user_namespace']).to be_true
+      expect(info['network_namespace']).to be_true
+      expect(info['cgroup']).to be_true
+      expect(info['cgroup_clone_children_flag']).to be_true
+      expect(info['cgroup_device']).to be_true
+      expect(info['cgroup_sched']).to be_true
+      expect(info['cgroup_cpu_account']).to be_true
+      expect(info['cgroup_memory_controller']).to be_true
+      expect(info['cgroup_cpuset']).to be_true
+      expect(info['veth_pair_device']).to be_true
+      expect(info['macvlan']).to be_true
+      expect(info['vlan']).to be_true
+      expect(info['file_capabilities']).to be_true
     end
   end
 
@@ -65,8 +65,8 @@ describe LXC do
     it 'returns a container for name' do
       c = LXC.container('foo')
 
-      c.should be_a LXC::Container
-      c.name.should eq('foo')
+      expect(c).to be_a LXC::Container
+      expect(c.name).to eq('foo')
     end
   end
 
@@ -75,10 +75,10 @@ describe LXC do
       stub_lxc('ls') { "vm0\nvm1\nvm0" }
     
       list = LXC.containers
-      list.should be_an Array
-      list.size.should eq(2)
-      list.first.should be_a LXC::Container
-      list.first.name.should eq('vm0')
+      expect(list).to be_an Array
+      expect(list.size).to eq(2)
+      expect(list.first).to be_a LXC::Container
+      expect(list.first.name).to eq('vm0')
     end
 
     context 'with argument' do
@@ -86,7 +86,7 @@ describe LXC do
         stub_lxc('ls') { "vm0\nvm1\nfoo\n"}
 
         list = LXC.containers("vm")
-        list.size.should eq(2)
+        expect(list.size).to eq(2)
       end
     end
   end
@@ -99,13 +99,13 @@ describe LXC do
     end
 
     it 'executes command using sudo' do
-      LXC.use_sudo.should be_true
+      expect(LXC.use_sudo).to be_true
 
       POSIX::Spawn::Child.stub(:new).
         with('sudo lxc-version').
         and_return(result)
 
-      LXC.run('version').should eq 'lxc version: 0.7.5'
+      expect(LXC.run('version')).to eq 'lxc version: 0.7.5'
     end
   end
 
@@ -114,16 +114,16 @@ describe LXC do
 
     it 'should be true' do
       foo = Bar.new
-      foo.use_sudo.should eq(true)
-      LXC.use_sudo.should eq(true)
+      expect(foo.use_sudo).to be_true
+      expect(LXC.use_sudo).to be_true
     end
 
     it 'should be false' do
       LXC.use_sudo = false
       foo = Bar.new
 
-      LXC.use_sudo.should eq(false)
-      foo.use_sudo.should eq(false)
+      expect(LXC.use_sudo).to be_false
+      expect(foo.use_sudo).to be_false
     end
   end
 end
