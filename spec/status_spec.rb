@@ -5,11 +5,11 @@ describe LXC::Status do
     let(:status) { LXC::Status.new('RUNNING', '12345') }
 
     it 'makes state downcase' do
-      status.state.should eq 'running'
+      expect(status.state).to eq 'running'
     end
 
     it 'converts given pid into integer' do
-      status.pid.should be_an Integer
+      expect(status.pid).to be_an Integer
     end
   end
 
@@ -18,8 +18,8 @@ describe LXC::Status do
 
     it 'returns a hash representation' do
       result = status.to_hash
-      result.should be_a Hash
-      result.should include 'state', 'pid'
+      expect(result).to be_a Hash
+      expect(result).to include 'state', 'pid'
     end
   end
 
@@ -27,7 +27,7 @@ describe LXC::Status do
     let(:status) { LXC::Status.new('RUNNING', '12345') }
 
     it 'returns a string representation' do
-      status.to_s.should eq 'state=running pid=12345'
+      expect(status.to_s).to eq 'state=running pid=12345'
     end
   end
 end
