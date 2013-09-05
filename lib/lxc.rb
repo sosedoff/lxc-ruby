@@ -27,8 +27,7 @@ module LXC
   # Check if all binaries are present in the system
   # @return [Boolean] true if binary files are found
   def self.installed?
-    result = LXC::Shell::BIN_FILES.map { |f| binary_installed?(f) }.uniq
-    !result.include?(false)
+    LXC::Shell::BIN_FILES.all?{ |f| binary_installed?(f) }
   end
 
   # Get LXC configuration info
