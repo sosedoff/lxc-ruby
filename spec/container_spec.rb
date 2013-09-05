@@ -10,7 +10,7 @@ describe LXC::Container do
 
   describe '#name' do
     it 'should be set to "app"' do
-      subject.name.should eq 'app'
+      expect(subject.name).to eq 'app'
     end
   end
 
@@ -18,14 +18,14 @@ describe LXC::Container do
     context 'for existing container' do
       it 'returns true' do
         stub_lxc('ls') { "app\napp2" }
-        subject.exists?.should be_true
+        expect(subject).to exist
       end
     end
 
     context 'for non-existing container' do
       it 'returns false' do
         stub_lxc('ls') { "app2\napp3" }
-        subject.exists?.should be_false
+        expect(subject).to_not exist
       end
     end
   end
@@ -33,12 +33,12 @@ describe LXC::Container do
   describe '#status' do
     it 'returns STOPPED' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
-      subject.status.should eq LXC::Status.new('STOPPED', '-1')
+      expect(subject.status).to eq LXC::Status.new('STOPPED', '-1')
     end
 
     it 'returns RUNNING' do
       stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
-      subject.status.should eq LXC::Status.new('RUNNING', '2125')
+      expect(subject.status).to eq LXC::Status.new('RUNNING', '2125')
     end
   end
 
@@ -71,7 +71,7 @@ describe LXC::Container do
       end
 
       it 'stops and destroys container' do
-        subject.destroy(true).should eq true
+        expect(subject.destroy(true)).to be_true
       end
     end
   end
@@ -79,14 +79,14 @@ describe LXC::Container do
   describe '#memory_usage' do
     it 'returns the amount of used memory' do
       stub_lxc('cgroup', '-n', 'app', 'memory.usage_in_bytes') { "3280896\n" }
-      subject.memory_usage.should eq(3280896)
+      expect(subject.memory_usage).to eq(3280896)
     end
   end
 
   describe '#memory_limit' do
     it 'returns the memory limit' do
       stub_lxc('cgroup', '-n', 'app', 'memory.limit_in_bytes') { "268435456\n" }
-      subject.memory_limit.should eq(268435456)
+      expect(subject.memory_limit).to eq(268435456)
     end
   end
 
@@ -104,16 +104,16 @@ describe LXC::Container do
       stub_lxc('ps', '-n', 'app', '--', '-eo pid,user,%cpu,%mem,args') { fixture('lxc-ps-aux.txt') }
 
       list = subject.processes
-      list.should be_an Array
+      expect(list).to be_an Array
 
       p = list.first
-      p.should be_a Hash
-      p.should have_key('pid')
-      p.should have_key('user')
-      p.should have_key('cpu')
-      p.should have_key('memory')
-      p.should have_key('command')
-      p.should have_key('args')
+      expect(p).to be_a Hash
+      expect(p).to have_key('pid')
+      expect(p).to have_key('user')
+      expect(p).to have_key('cpu')
+      expect(p).to have_key('memory')
+      expect(p).to have_key('command')
+      expect(p).to have_key('args')
     end
   end
 
@@ -121,7 +121,7 @@ describe LXC::Container do
     context 'when container does not exist' do
       it 'returns false' do
         stub_lxc('ls') { "foo-app" }
-        subject.stopped?.should be_false
+        expect(subject).to_not be_stopped
       end
     end
 
@@ -130,14 +130,14 @@ describe LXC::Container do
         stub_lxc('ls') { 'app' }
         stub_lxc('info', '-n', 'app') { fixture('lxc-info-stopped.txt') }
 
-        subject.stopped?.should be_true
+        expect(subject).to be_stopped
       end
 
       it 'returns false if running' do
         stub_lxc('ls') { 'app' }
         stub_lxc('info', '-n', 'app') { fixture('lxc-info-running.txt') }
 
-        subject.stopped?.should be_false
+        expect(subject).to_not be_stopped
       end
     end
   end
@@ -149,7 +149,7 @@ describe LXC::Container do
       end
 
       it 'returns cpu shares value' do
-        subject.cpu_shares.should eq 1024
+        expect(subject.cpu_shares).to eq 1024
       end
     end
 
@@ -159,17 +159,17 @@ describe LXC::Container do
       end
 
       it 'returns nil' do
-        subject.cpu_shares.should be_nil
+        expect(subject.cpu_shares).to be_nil
       end
     end
 
     context 'when run command is nil' do
       before do
-        subject.stub!(:run).and_return(nil)
+        subject.stub(:run).and_return(nil)
       end
 
       it 'should return nil' do
-        subject.cpu_shares.should be_nil
+        expect(subject.cpu_shares).to be_nil
       end
     end
   end
@@ -181,7 +181,7 @@ describe LXC::Container do
       end
 
       it 'returns usage in seconds' do
-        subject.cpu_usage.should eq 4239.0819
+        expect(subject.cpu_usage).to eq 4239.0819
       end
     end
 
@@ -191,17 +191,17 @@ describe LXC::Container do
       end
 
       it 'returns nil' do
-        subject.cpu_usage.should be_nil
+        expect(subject.cpu_usage).to be_nil
       end
     end
 
     context 'when run command is nil' do
       before do
-        subject.stub!(:run).and_return(nil)
+        subject.stub(:run).and_return(nil)
       end
 
       it 'should return nil' do
-        subject.cpu_usage.should be_nil
+        expect(subject.cpu_usage).to be_nil
       end
     end
   end
@@ -219,7 +219,7 @@ describe LXC::Container do
 
     it 'executes a command with container name' do
       stub_lxc("info", "-n", "app") { "info" }
-      subject.info.should eq "info"
+      expect(subject.info).to eq "info"
     end
   end
 end
