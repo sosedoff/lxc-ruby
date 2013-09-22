@@ -158,7 +158,8 @@ module LXC
         end
 
         if !!path[:template]
-          template_path = "/usr/lib/lxc/templates/lxc-#{path[:template]}"
+          template_dir =  path[:template_dir] || '/usr/lib/lxc/templates'
+          template_path = File.join(template_dir,"lxc-#{path[:template]}")
           unless File.exists?(template_path)
             raise ArgumentError, "Template #{path[:template]} does not exist."
           end
