@@ -70,8 +70,8 @@ describe LXC do
     end
   end
 
-  describe '.containers' do
-    it 'returns all available containers' do
+  describe ".containers" do
+    it "returns all available containers" do
       stub_lxc('ls') { "vm0\nvm1\nvm0" }
     
       list = LXC.containers
@@ -81,12 +81,23 @@ describe LXC do
       expect(list.first.name).to eq('vm0')
     end
 
-    context 'with argument' do
-      it 'returns containers filtered by name' do
-        stub_lxc('ls') { "vm0\nvm1\nfoo\n"}
+    context "with string filter" do
+      before do
+        stub_lxc("ls") { "vm0\nvm1\nfoo\n"}
+      end
 
-        list = LXC.containers("vm")
-        expect(list.size).to eq(2)
+      it "returns matched containers" do
+        expect(LXC.containers("vm").size).to eq 2
+      end
+    end
+
+    context "with regexp filter" do
+      before do
+        stub_lxc("ls") { "vm0\nvm1\nfoo\n"}
+      end
+
+      it "returns matched container" do
+        expect(LXC.containers(/vm/).size).to eq 2
       end
     end
   end

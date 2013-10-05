@@ -53,9 +53,18 @@ module LXC
   # @param [String] select containers that match string
   # @return [Array] array of LXC::Containers
   def self.containers(filter=nil)
-    names = LXC.run('ls').split("\n").uniq
+    names = LXC.run("ls").split("\n").uniq
 
-    names.delete_if { |v| !v.include?(filter) } if filter.kind_of?(String)
+    if filter
+      names.keep_if do |name|
+        if filter.kind_of?(Regexp)
+          name =~ filter ? true : false
+        elsif filter.kind_of?(String)
+          name.include?(filter)
+        end
+      end
+    end
+    
     names.map { |name| LXC::Container.new(name) }
   end
 
