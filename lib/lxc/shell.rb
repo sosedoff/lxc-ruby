@@ -88,6 +88,11 @@ module LXC
       cmd << "#{command_name} #{args.join(' ')}".strip
       cmd << " | #{yield}" if block_given?
 
+      # Debug if LXC_DEBUG env is set
+      if ENV["LXC_DEBUG"]
+        puts "Executing: #{cmd}"
+      end
+
       child = POSIX::Spawn::Child.new(cmd.strip)
       child.out
     end
