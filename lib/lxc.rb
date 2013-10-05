@@ -56,7 +56,7 @@ module LXC
     names = LXC.run("ls").split("\n").uniq
 
     if filter
-      names.keep_if do |name|
+      names = names.select do |name|
         if filter.kind_of?(Regexp)
           name =~ filter ? true : false
         elsif filter.kind_of?(String)
