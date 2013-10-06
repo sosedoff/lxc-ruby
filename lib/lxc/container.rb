@@ -172,8 +172,11 @@ module LXC
         LXC.run('create', args)
         exists?
       else
-        raise ArgumentError, "File #{path} does not exist." unless File.exists?(path)
-        LXC.run('create', '-f', path)
+        unless File.exists?(path)
+          raise ArgumentError, "File #{path} does not exist."
+        end
+
+        LXC.run("create", "-n", name, "-f", path)
         exists?
       end
     end

@@ -42,6 +42,34 @@ describe LXC::Container do
     end
   end
 
+  describe "#create" do
+    context "when container already exists" do
+      before do
+        stub_lxc("ls") { "app" }
+      end
+
+      it "raises error" do
+        expect { subject.create("path") }.
+          to raise_error LXC::ContainerError, "Container already exists."
+      end
+    end
+
+    it "raises error if config path does not exist" do
+      stub_lxc("ls") { "" }
+
+      expect { subject.create("foobar") }.
+        to raise_error ArgumentError, "File foobar does not exist."
+    end
+
+    it "creates a new container" do
+      stub_lxc("ls") { "" }
+      stub_lxc("create", "-n", "app", "-f", "/tmp") { "" }
+      stub_lxc("ls") { "app" }
+
+      expect(subject.create("/tmp")).to eq true
+    end
+  end
+
   describe '#destroy' do
     it 'raises error if container does not exist' do
       stub_lxc('ls') { "app2" }
