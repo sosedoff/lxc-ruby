@@ -1,11 +1,8 @@
 require 'posix/spawn'
 require 'lxc/version'
+require "lxc/errors"
 
 module LXC
-  class Error              < StandardError ; end
-  class ContainerError     < Error ; end
-  class ConfigurationError < Error ; end
-
   autoload :Shell,                'lxc/shell'
   autoload :Configuration,        'lxc/configuration'
   autoload :ConfigurationOptions, 'lxc/configuration_options'
