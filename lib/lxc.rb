@@ -1,13 +1,13 @@
-require 'posix/spawn'
-require 'lxc/version'
+require "posix/spawn"
+require "lxc/version"
 require "lxc/errors"
 
 module LXC
-  autoload :Shell,                'lxc/shell'
-  autoload :Configuration,        'lxc/configuration'
-  autoload :ConfigurationOptions, 'lxc/configuration_options'
-  autoload :Container,            'lxc/container'
-  autoload :Status,               'lxc/status'
+  autoload :Shell,                "lxc/shell"
+  autoload :Configuration,        "lxc/configuration"
+  autoload :ConfigurationOptions, "lxc/configuration_options"
+  autoload :Container,            "lxc/container"
+  autoload :Status,               "lxc/status"
 
   class << self
     include LXC::Shell
@@ -30,10 +30,10 @@ module LXC
   # Get LXC configuration info
   # @return [Hash] hash containing config groups
   def self.config
-    str = LXC.run('checkconfig') { LXC::Shell::REMOVE_COLORS }
+    str = LXC.run("checkconfig") { LXC::Shell::REMOVE_COLORS }
 
     data = str.scan(/^([\w\s]+): (enabled|disabled)$/).map { |r|
-      [r.first.downcase.gsub(' ', '_'), r.last == 'enabled']
+      [r.first.downcase.gsub(" ", "_"), r.last == "enabled"]
     }
 
     Hash[data]
@@ -68,6 +68,6 @@ module LXC
   # Get currently installeded LXC version
   # @return [String] current LXC version
   def self.version
-    LXC.run('version').strip.split(' ').last
+    LXC.run("version").strip.split(" ").last
   end
 end
