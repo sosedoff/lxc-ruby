@@ -12,13 +12,13 @@ module LXC
     # Get container attributes hash
     # @return [Hash]
     def to_hash
-      status.to_hash.merge('name' => name)
+      status.to_hash.merge("name" => name)
     end
 
     # Get current status of container
     # @return [Hash] hash with :state and :pid attributes
     def status
-      output = run('info')
+      output = run("info")
       result = output.scan(/^state:\s+([\w]+)|pid:\s+(-?[\d]+)$/).flatten
 
       LXC::Status.new(result.first, result.last)
@@ -39,38 +39,38 @@ module LXC
     # Check if container exists
     # @return [Boolean]
     def exists?
-      LXC.run('ls').split("\n").uniq.include?(name)
+      LXC.run("ls").split("\n").uniq.include?(name)
     end
 
     # Check if container is running
     # @return [Boolean]
     def running?
-      status.state == 'running'
+      status.state == "running"
     end
 
     # Check if container is frozen
     # @return [Boolean]
     def frozen?
-      status.state == 'frozen'
+      status.state == "frozen"
     end
 
     # Check if container is stopped
     # @return [Boolean]
     def stopped?
-      exists? && status.state == 'stopped'
+      exists? && status.state == "stopped"
     end
 
     # Start container
     # @return [Hash] container status hash
     def start
-      run('start', '-d')
+      run("start", "-d")
       status
     end
 
     # Stop container
     # @return [Hash] container status hash
     def stop
-      run('stop')
+      run("stop")
       status
     end
 
@@ -84,14 +84,14 @@ module LXC
     # Freeze container
     # @return [Hash] container status hash
     def freeze
-      run('freeze')
+      run("freeze")
       status
     end
 
     # Unfreeze container
     # @return [Hash] container status hash
     def unfreeze
-      run('unfreeze')
+      run("unfreeze")
       status
     end
 
@@ -102,33 +102,33 @@ module LXC
         raise ArgumentError, "Invalid container state: #{state}"
       end
 
-      run('wait', '-s', state)
+      run("wait", "-s", state)
     end
 
     # Get container memory usage in bytes
     # @return [Integer]
     def memory_usage
-      run('cgroup', 'memory.usage_in_bytes').strip.to_i
+      run("cgroup", "memory.usage_in_bytes").strip.to_i
     end
 
     # Get container memory limit in bytes
     # @return [Integer]
     def memory_limit
-      run('cgroup', 'memory.limit_in_bytes').strip.to_i
+      run("cgroup", "memory.limit_in_bytes").strip.to_i
     end
 
     # Get container cpu shares
     # @return [Integer]
     def cpu_shares
-      result = run('cgroup', "cpu.shares").to_s.strip
+      result = run("cgroup", "cpu.shares").to_s.strip
       result.empty? ? nil : result.to_i
     end
 
     # Get container cpu usage in seconds
     # @return [Float]
     def cpu_usage
-      result = run('cgroup', "cpuacct.usage").to_s.strip
-      result.empty? ? nil : Float('%.4f' % (result.to_i / 1E9))
+      result = run("cgroup", "cpuacct.usage").to_s.strip
+      result.empty? ? nil : Float("%.4f" % (result.to_i / 1E9))
     end
 
     # Get container processes
@@ -136,7 +136,7 @@ module LXC
     def processes
       raise ContainerError, "Container is not running" if !running?
 
-      str = run('ps', '--', '-eo pid,user,%cpu,%mem,args').strip
+      str = run("ps", "--", "-eo pid,user,%cpu,%mem,args").strip
       lines = str.split("\n") ; lines.delete_at(0)
       lines.map { |l| parse_process_line(l) }
     end
@@ -158,7 +158,7 @@ module LXC
         end
 
         if !!path[:template]
-          template_dir =  path[:template_dir] || '/usr/lib/lxc/templates'
+          template_dir =  path[:template_dir] || "/usr/lib/lxc/templates"
           template_path = File.join(template_dir,"lxc-#{path[:template]}")
           unless File.exists?(template_path)
             raise ArgumentError, "Template #{path[:template]} does not exist."
@@ -167,9 +167,9 @@ module LXC
         end
 
         args += " -B #{path[:backingstore]}" if !!path[:backingstore]
-        args += " -- #{path[:template_options].join(' ')}".strip if !!path[:template_options]
+        args += " -- #{path[:template_options].join(" ")}".strip if !!path[:template_options]
 
-        LXC.run('create', args)
+        LXC.run("create", args)
         exists?
       else
         unless File.exists?(path)
@@ -191,7 +191,7 @@ module LXC
         raise ContainerError, "New container already exists."
       end
 
-      LXC.run('clone', '-o', name, '-n', target)
+      LXC.run("clone", "-o", name, "-n", target)
       LXC.container(target)
     end
 
@@ -205,7 +205,7 @@ module LXC
         raise ContainerError, "Source container does not exist."
       end
 
-      run('clone', '-o', source)
+      run("clone", "-o", source)
       exists?
     end
 
@@ -229,7 +229,7 @@ module LXC
         end  
       end
 
-      run('destroy')
+      run("destroy")
 
       !exists?
     end
@@ -241,16 +241,16 @@ module LXC
     end
 
     def parse_process_line(line)
-      chunks = line.split(' ')
+      chunks = line.split(" ")
       chunks.delete_at(0)
 
       {
-        'pid'     => chunks.shift,
-        'user'    => chunks.shift,
-        'cpu'     => chunks.shift,
-        'memory'  => chunks.shift,
-        'command' => chunks.shift,
-        'args'    => chunks.join(' ')
+        "pid"     => chunks.shift,
+        "user"    => chunks.shift,
+        "cpu"     => chunks.shift,
+        "memory"  => chunks.shift,
+        "command" => chunks.shift,
+        "args"    => chunks.join(" ")
       }
     end
   end
