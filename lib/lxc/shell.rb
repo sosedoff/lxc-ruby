@@ -2,45 +2,45 @@ module LXC
   module Shell
     extend self
 
-    BIN_PREFIX = '/usr/bin'
+    BIN_PREFIX = "/usr/bin"
 
     BIN_FILES = [
-      'lxc-attach',
-      'lxc-cgroup',
-      'lxc-checkconfig',
-      'lxc-checkpoint',
-      'lxc-clone',
-      'lxc-console',
-      'lxc-create',
-      'lxc-destroy',
-      'lxc-execute',
-      'lxc-freeze',
-      'lxc-info',
-      'lxc-kill',
-      'lxc-ls',
-      'lxc-monitor',
-      'lxc-netstat',
-      'lxc-ps',
-      'lxc-restart',
-      'lxc-setcap',
-      'lxc-setuid',
-      'lxc-start',
-      'lxc-start-ephemeral',
-      'lxc-stop',
-      'lxc-unfreeze',
-      'lxc-unshare',
-      'lxc-version',
-      'lxc-wait'
+      "lxc-attach",
+      "lxc-cgroup",
+      "lxc-checkconfig",
+      "lxc-checkpoint",
+      "lxc-clone",
+      "lxc-console",
+      "lxc-create",
+      "lxc-destroy",
+      "lxc-execute",
+      "lxc-freeze",
+      "lxc-info",
+      "lxc-kill",
+      "lxc-ls",
+      "lxc-monitor",
+      "lxc-netstat",
+      "lxc-ps",
+      "lxc-restart",
+      "lxc-setcap",
+      "lxc-setuid",
+      "lxc-start",
+      "lxc-start-ephemeral",
+      "lxc-stop",
+      "lxc-unfreeze",
+      "lxc-unshare",
+      "lxc-version",
+      "lxc-wait"
     ]
 
     CONTAINER_STATES = [
-      'STOPPED',
-      'STARTING',
-      'RUNNING',
-      'STOPPING',
-      'ABORTING',
-      'FREEZING',
-      'FROZEN'
+      "STOPPED",
+      "STARTING",
+      "RUNNING",
+      "STOPPING",
+      "ABORTING",
+      "FREEZING",
+      "FROZEN"
     ]
 
     # Terminal command to strip all special color symbols
@@ -74,7 +74,7 @@ module LXC
     # @param [Array] args command arguments
     # @return [String] execution result
     #
-    # If you would like to use pipe command you'll need to 
+    # If you would like to use pipe command you"ll need to 
     # provide a block that returns string
     def run(command, *args)
       command_name = "lxc-#{command}"
@@ -85,7 +85,7 @@ module LXC
 
       cmd = ""
       cmd << "sudo " if use_sudo == true
-      cmd << "#{command_name} #{args.join(' ')}".strip
+      cmd << "#{command_name} #{args.join(" ")}".strip
       cmd << " | #{yield}" if block_given?
 
       # Debug if LXC_DEBUG env is set
