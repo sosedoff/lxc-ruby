@@ -58,7 +58,7 @@ module LXC
         end
       end
 
-      File.open(path, 'w') do |f|
+      File.open(path, "w") do |f|
         f.write(lines.flatten.join("\n"))
       end
     end
@@ -67,16 +67,16 @@ module LXC
 
     def parse(data)
       hash = {}
-      lines = data.split("\n").map(&:strip).select { |l| !l.empty? && l[0,1] != '#' }
+      lines = data.split("\n").map(&:strip).select { |l| !l.empty? && l[0,1] != "#" }
 
       lines.each do |l|
-        key,value = l.split('=').map(&:strip)
+        key,value = l.split("=").map(&:strip)
 
         if !valid_option?(key)
           raise ConfigurationError, "Invalid config attribute: #{key}."
         end
 
-        key.gsub!(/^lxc\./, '').gsub!('.', '_')
+        key.gsub!(/^lxc\./, '').gsub!(".", "_")
         
         hash[key] = [] if !hash.key?(key)
         hash[key] << value
