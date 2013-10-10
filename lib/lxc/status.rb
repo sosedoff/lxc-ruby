@@ -4,7 +4,7 @@ module LXC
 
     def initialize(state, pid)
       @state = state.to_s.downcase
-      @pid = Integer(pid)
+      @pid   = Integer(pid)
     end
 
     def == (instance)
@@ -12,7 +12,10 @@ module LXC
     end
 
     def to_hash
-      {'state' => state, 'pid' => pid}
+      {
+        "state" => state,
+        "pid" => pid
+      }
     end
 
     def to_s
