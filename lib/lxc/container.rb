@@ -36,6 +36,12 @@ module LXC
       status.pid
     end
 
+    # Get IP of the container
+    # @return [String]
+    def ip
+      output = run("info")
+      result = output.scan(/^ip:\s+([\d.]+)$/).flatten.first
+    end
     # Check if container exists
     # @return [Boolean]
     def exists?
