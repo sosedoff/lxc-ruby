@@ -62,12 +62,6 @@ module LXC
       val
     end
 
-    # Obtain the installed lxc version
-    # @return [String] installed native lxc library version
-    def version
-      run("version")
-    end
-
     # Check if container state is valid
     # @param name [String] container name
     # @return [Boolean]
