@@ -68,6 +68,6 @@ module LXC
   # Get currently installeded LXC version
   # @return [String] current LXC version
   def self.version
-    LXC.run("version").strip.split(" ").last
+    LXC.run("info", "--version").strip.split(" ").last
   end
 end
