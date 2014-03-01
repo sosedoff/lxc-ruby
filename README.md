@@ -11,6 +11,7 @@ Supported LXC versions:
 - 0.7.5
 - 0.8.0
 - 0.9.0
+- 1.0.0
 
 For testing purposes you can use [Vagrant](http://vagrantup.com/) with [VirtualBox](https://www.virtualbox.org/). 
 Most of the functionality was tested on 64-bit Ubuntu 12.04.
