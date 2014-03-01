@@ -68,6 +68,11 @@ module LXC
   # Get currently installeded LXC version
   # @return [String] current LXC version
   def self.version
-    LXC.run("info", "--version").strip.split(" ").last
+    # use 'lxc-version' if it exists (lxc < 1.0.0)
+    if File.exists?(File.join(LXC::Shell::BIN_PREFIX, 'lxc-version'))
+      LXC.run("version").strip.split(" ").last
+    else
+      LXC.run("info", "--version").strip.split(" ").last
+    end
   end
 end
