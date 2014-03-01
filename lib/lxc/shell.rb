@@ -6,31 +6,27 @@ module LXC
 
     BIN_FILES = [
       "lxc-attach",
+      "lxc-autostart",
       "lxc-cgroup",
       "lxc-checkconfig",
-      "lxc-checkpoint",
       "lxc-clone",
+      "lxc-config",
       "lxc-console",
       "lxc-create",
       "lxc-destroy",
       "lxc-execute",
       "lxc-freeze",
       "lxc-info",
-      "lxc-kill",
       "lxc-ls",
       "lxc-monitor",
-      "lxc-netstat",
-      "lxc-ps",
-      "lxc-restart",
-      "lxc-setcap",
-      "lxc-setuid",
+      "lxc-snapshot",
       "lxc-start",
-      "lxc-start-ephemeral",
       "lxc-stop",
       "lxc-unfreeze",
       "lxc-unshare",
-      "lxc-version",
-      "lxc-wait"
+      "lxc-usernsexec",
+      "lxc-wait",
+      "lxc-version"
     ]
 
     CONTAINER_STATES = [

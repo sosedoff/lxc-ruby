@@ -17,6 +17,9 @@ module LXC
   # @param [String] binary filename
   # @return [Boolean] true if installed
   def self.binary_installed?(name)
+    # lxc-version only exists with lxc < 1.0.0
+    return true if name == 'lxc-version'
+
     path = File.join(LXC::Shell::BIN_PREFIX, name)
     File.exists?(path)
   end
@@ -68,6 +71,11 @@ module LXC
   # Get currently installeded LXC version
   # @return [String] current LXC version
   def self.version
-    LXC.run("version").strip.split(" ").last
+    # use 'lxc-version' if it exists (lxc < 1.0.0)
+    if File.exists?(File.join(LXC::Shell::BIN_PREFIX, 'lxc-version'))
+      LXC.run("version").strip.split(" ").last
+    else
+      LXC.run("info", "--version").strip.split(" ").last
+    end
   end
 end

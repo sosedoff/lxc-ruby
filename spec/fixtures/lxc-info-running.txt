@@ -1,2 +1,2 @@
-state:   RUNNING
-pid:      2125
+State:   RUNNING
+PID:      2125
