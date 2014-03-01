@@ -19,7 +19,7 @@ module LXC
     # @return [Hash] hash with :state and :pid attributes
     def status
       output = run("info")
-      result = output.scan(/^state:\s+([\w]+)|pid:\s+(-?[\d]+)$/).flatten
+      result = output.scan(/^[Ss]tate:\s+([\w]+)|[Pp][Ii][Dd]:\s+(-?[\d]+)$/).flatten
 
       LXC::Status.new(result.first, result.last)
     end
