@@ -25,7 +25,8 @@ module LXC
       "lxc-unfreeze",
       "lxc-unshare",
       "lxc-usernsexec",
-      "lxc-wait"
+      "lxc-wait",
+      "lxc-version"
     ]
 
     CONTAINER_STATES = [

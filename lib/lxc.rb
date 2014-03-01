@@ -17,6 +17,9 @@ module LXC
   # @param [String] binary filename
   # @return [Boolean] true if installed
   def self.binary_installed?(name)
+    # lxc-version only exists with lxc < 1.0.0
+    return true if name == 'lxc-version'
+
     path = File.join(LXC::Shell::BIN_PREFIX, name)
     File.exists?(path)
   end
